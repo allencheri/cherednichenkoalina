@@ -24,7 +24,8 @@
             </li>
 
             <li class="nav">
-              <router-link to="/articulos" class="nav-link text-white" exact-active-class="active">Articulos</router-link>
+              <router-link to="/articulos" class="nav-link text-white"
+                exact-active-class="active">Articulos</router-link>
             </li>
 
             <li class="nav">
@@ -32,10 +33,11 @@
             </li>
 
             <li class="nav">
-              <router-link to="/comentarios" class="nav-link text-white" exact-active-class="active">Comentarios</router-link>
+              <router-link to="/comentarios" class="nav-link text-white"
+                exact-active-class="active">Comentarios</router-link>
             </li>
 
-            
+
           </ul>
 
           <div class="d-flex ms-auto">
@@ -45,6 +47,21 @@
               <i class="bi bi-search"></i>
             </button>
           </div>
+
+          <div class="d-flex align-items-center">
+            <div class="dropdown">
+              <button class="btn btn-light btn-sm rounded-circle shadow-sm" type="button" id="dropdownMenuButton1"
+                data-bs-toggle="dropdown" aria-expanded="false" aria-label="Menú de usuario">
+                <i class="bi bi-person fs-5"></i>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">Acceder</a></li>
+                <li><a class="dropdown-item" href="/registro">Registrar</a></li>
+              </ul>
+            </div>
+          </div>
+
+
         </div>
       </div>
     </nav>

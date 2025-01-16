@@ -28,12 +28,12 @@
                         maxlength="256" v-model="articulo.descripcion"></textarea>
 
                     <span class="input-group-text me-2 ms-4">Precio Unitario</span>
-                    <input type="number" class="form-control sm w-25" v-model="articulo.precio_unitario">
+                    <input type="text" class="form-control sm w-25" v-model="articulo.precio">
                 </div>
 
                 <div class="input-group-text mb-3">
                     <span class="input-group-text me-2 ms-4">Stock</span>
-                    <input type="number" class="form-control sm w-50" v-model="articulo.stock">
+                    <input type="text" class="form-control sm w-50" v-model="articulo.stock">
 
 
 
@@ -44,7 +44,8 @@
 
                 <div class="input-group-text mb-3 w-100">
                     <span class="input-group-text mb-2 mt-2">Imagen URL: </span>
-                    <input type="url" class="form-control sm w-100 ms-2" placeholder="http://imagen-url.com">
+                    <input type="url" class="form-control sm w-100 ms-2" placeholder="http://imagen-url.com"
+                        v-model="articulo.imagen_url">
 
                     <span for="comentarios" class="input-group-text mb-2 mt-2 ms-4">Fecha de Alta:</span>
                     <input type="date" class="form-control sm w-25 ms-2" placeholder="dd/mm/yyyy"
@@ -53,10 +54,10 @@
 
 
                 <input class="btn btn-primary m-2 col-2 p-2 text-align-center" type="submit"
-                    @click.prevent="grabarArticulo()" value="Grabar">
+                    @click.prevent="grabarArticulo" value="Grabar">
 
-                <input class="btn btn-primary m-2 col-2 p-2 text-align-center" type="submit"
-                    @click.prevent="resetForm()" value="Limpiar">
+                <input class="btn btn-primary m-2 col-2 p-2 text-align-center" type="submit" @click.prevent="resetForm"
+                    value="Limpiar">
             </form>
 
             <div class="container my-2 mt-5 mb-5">
@@ -85,13 +86,13 @@
                         </thead>
                         <tbody>
                             <tr v-for="articulo in articulos" :key="articulo.id">
-                                <td class="align-middle">{{ articulo.id }}</td>
+                                <td class="align-middle">{{ truncarId(articulo._id) }}</td>
                                 <td class="align-middle">{{ articulo.nombre }}</td>
                                 <td class="align-middle">{{ articulo.categoria }}</td>
                                 <td class="align-middle">{{ articulo.descripcion }}</td>
                                 <td class="align-middle">{{ articulo.precio }}</td>
                                 <td class="align-middle">{{ articulo.stock }}</td>
-                                <td class="align-middle">{{ articulo.fechaAlta }}</td>
+                                <td class="align-middle">{{ articulo.fechaAlta.split('T')[0] }}</td>
                                 <td class="text-center align-middle table-warning">
                                     <div>
                                         <button class="btn btn-warning m-2" @click="seleccionaArticulo(articulo)">
@@ -131,7 +132,7 @@
 
 <script>
 import Swal from 'sweetalert2';
-import { obtenerArticulos, agregarArticulo, eliminarArticulo, actualizarArticulo } from '@/js/articuloServicios.js';
+import { obtenerArticulos, agregarArticulo, eliminarArticulo } from '@/js/articuloServicios.js';
 
 export default {
     name: "TablaArticulos",
@@ -143,8 +144,8 @@ export default {
                 nombre: '',
                 categoria: '',
                 descripcion: '',
-                precio: 0.00,
-                stock: 0,
+                precio: '',
+                stock: '',
                 personalizacion: '',
                 imagen_url: '',
                 fechaAlta: ''
@@ -154,7 +155,7 @@ export default {
             categorias: [
                 'Electrónica',
                 'Hogar',
-                'Ofimática', 
+                'Ofimática',
                 'Deporte',
                 'Libros',
                 'Otros'
@@ -175,6 +176,9 @@ export default {
     },
 
     methods: {
+        truncarId(id) {
+            return id.slice(-8);
+        },
 
         siguientePagina() {
             if (this.currentPage * this.pageSize < this.articulos.length) {
@@ -189,39 +193,21 @@ export default {
         },
 
         async grabarArticulo() {
-
-            // Verificar si los campos requeridos están llenos
-            if (this.articulo.nombre && this.articulo.categoria && this.articulo.precio_unitario && this.articulo.stock) {
-
-                try {
-                    // Si existe el  articulo se modifica
-                    if (this.articulo.id) {
-
-                        actualizarArticulo(this.articulo.id, this.articulo)
-
-                        this.mostrarAlerta("Aviso", "Artículo modificado correctamente", "success")
-                        this.getArticulos();
-                    } else {
-                        // Borramos el id para que no de problemas
-                        delete this.articulo.id;
-                        // this.articulo.categoria = this.articulo.categoria.nombre; 
-                        agregarArticulo(this.articulo);
-
-                        this.mostrarAlerta("Aviso", "Artículo dado de alta correctamente", "success")
-                        this.getArticulos();
-                    }
-
-                    this.resetForm()
-                } catch (error) {
-                    console.error(error);
-                    this.mostrarAlerta('Error', 'No se pudo guardar el artículo.', 'error');
-                }
-
-            } else {
-                this.mostrarAlerta('Error', 'Por favor, completa todos los campos requeridos.', 'error');
+            if(this.articulo.nombre && this.articulo.categoria && this.articulo.descripcion && this.articulo.precio && this.articulo.stock && this.articulo.fechaAlta){
+            try {
+                const nuevoArticulo = await agregarArticulo(this.articulo);
+                console.log(nuevoArticulo);
+                this.mostrarAlerta("Aviso", "Artículo dado de alta correctamente", "success")
+                this.getArticulos();
+                this.resetForm()
+            } catch (error) {
+                console.error(error);
+                this.mostrarAlerta('Error', 'No se pudo guardar el artículo.', 'error');
             }
+        }else{
+            this.mostrarAlerta('Error', 'Complete todos los campos.', 'error')
+        }
         },
-
         async seleccionaArticulo(articulo) {
             // Buscar el articulo por DNI en el archivo JSON
             try {
@@ -233,9 +219,9 @@ export default {
 
                 if (articuloEncontrado) {
 
-                    this.articulo = { ...articuloEncontrado };                    
-                    this.articulo.fechaAlta = this.articulo.fechaAlta.split('T')[0];  // Para asegurarse de que la fecha esté en formato YYYY-MM-DD
-                    
+                    this.articulo = { ...articuloEncontrado };
+                    this.articulo.fechaAlta = this.articulo.fechaAlta.split('T')[0]; 
+
                 } else {
                     this.mostrarAlerta('Error', 'Artículo no encontrado en el servidor.', 'error');
                 }
@@ -258,15 +244,15 @@ export default {
             })
             if (resp.isConfirmed) {
                 try {
-                    if (articulo.id) {
-                        eliminarArticulo(articulo.id)
+                    if (articulo._id) {
+                        eliminarArticulo(articulo._id)
 
-                        this.mostrarAlerta("Aviso", "Artículo eliminado correctamente", "success")
+                        this.mostrarAlerta("Aviso", "Artículo dado de baja correctamente", "success")
                         this.getArticulos();
                     } else {
                         this.mostrarAlerta("Error", "Artículo no encontrado", "error")
                     }
-                    this.resetForm();
+                    this.resetForm()
                 } catch (error) {
                     console.error(error);
                     this.mostrarAlerta('Error', 'No se pudo dar de baja el articulo.', 'error');
@@ -293,33 +279,25 @@ export default {
                 nombre: "",
                 categoria: "",
                 descripcion: "",
-                precio_unitario: 0.00,
-                stock_disponible: 0,
+                precio: "",
+                stock: "",
                 personalizacion: "",
                 imagen_url: "",
-                fecha_alta: ""
+                fechaAlta: ""
             };
         },
 
 
         async getArticulos() {
             try {
+
                 this.articulos = await obtenerArticulos();
+                console.log(this.articulos)
 
             } catch (error) {
                 console.error(error);
             }
         },
-
-        async obtenerArticulos() {
-            try {
-                this.articulos = await obtenerArticulos();
-                console.log(this.articulos.length);
-            } catch (error) {
-                console.error("Error al obtener los articulos", error);
-            }
-        }
-
 
     },
 };

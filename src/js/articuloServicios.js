@@ -1,9 +1,9 @@
 import Swal from "sweetalert2";
 
+
 const API_URL = "http://localhost:5000/articulos"; // Ajusta la URL a tu servidor
 
 export async function obtenerArticulos() {
-    console.log(1)
     try {
         const response = await fetch(API_URL);
         if (!response.ok) {
@@ -13,13 +13,14 @@ export async function obtenerArticulos() {
         return await response.json();
     } catch (error) {
         console.error("Error en la solicitud:", error);
-        Swal.fire("Error", "Fallo conexión", "error");
+        Swal.fire("Error", "Fallo conexión o campos vacíos", "error");
         throw error;
     }
 }
 
 export async function agregarArticulo(datosArticulo) {
     try {
+       
         const response = await fetch(API_URL, {
             method: "POST",
             headers: {

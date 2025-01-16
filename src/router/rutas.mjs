@@ -1,16 +1,18 @@
 import express from 'express';
-import Articulo from '../modelos/modelos.js';
+import Articulo from "../modelos/modelos.mjs";
 import mongoose from 'mongoose';
 
 const rutas = express.Router();
 
-rutas.get('/articulos', async (req, res) => {
+
+rutas.get('/articulos', async (req, res)=> {
     try {
         const articulos = await Articulo.find({});
         res.json(articulos);
+
     } catch (error) {
-        res.status(500).json({ message: error.message });
-        console.log("Error al obtener artículos:", error);
+        res.status(500).json({error: error.message});
+        console.log("error obtener artículos", error)
     }
 });
 
@@ -66,6 +68,6 @@ rutas.delete('/articulos/:id', async (req, res) => {
         res.status(400).json({ message: error.message });
         console.log("Error al eliminar artículo:", error);
     }
-});
+}); 
 
-export default rutas;
+export default rutas; 

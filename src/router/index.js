@@ -8,6 +8,7 @@ import PoliticaPrivacidad from '@/components/PoliticaPrivacidad.vue'
 import TablaUsuarios from '@/components/TablaUsuarios.vue'
 import TablaComentarios from '@/components/TablaComentarios.vue'
 import TablaArticulos from '@/components/TablaArticulos.vue'
+import TablaRegistro from '@/components/TablaRegistro.vue'
 
 const routes = [
   {
@@ -72,8 +73,14 @@ const routes = [
     name: 'articulos',
 
     component: TablaArticulos
-  }
+  },
 
+  {
+    path: '/registro',
+    name: 'registro',
+
+    component: TablaRegistro
+  }
 ]
 
 const router = createRouter({
