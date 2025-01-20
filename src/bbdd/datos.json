@@ -32947,6 +32947,27 @@
       "baja": "",
       "movil": "662778899",
       "tipo": "usuario"
+    },
+    {
+      "id": "cb4b",
+      "dni": "19939361V",
+      "alta": "20/1/2025",
+      "apellidos": "Pepa",
+      "nombre": "Pig",
+      "direccion": "Vigo",
+      "email": "pepa@gmail.com",
+      "provincia": {
+        "id": "17",
+        "nm": "Girona"
+      },
+      "municipio": {
+        "id": "01022",
+        "nm": "Elciego"
+      },
+      "pass": "$2a$10$sq7TpLbC9IVVT2vkQpP1FereYzPIzOSJuRwYvolU0m61acG92mOMS",
+      "baja": "",
+      "movil": "12345678",
+      "tipo": "usuario"
     }
   ],
   "candidatos": [
@@ -33015,5 +33036,6 @@
       "stock": 236,
       "fechaAlta": "2025-01-10"
     }
-  ]
+  ],
+  "secret": "your_secret_key"
 }

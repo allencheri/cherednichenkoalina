@@ -1,0 +1,5 @@
+sudo npm install bcrypt bcryptjs
+sudo npm install jsonwebtoken express-jwt
+sudo npm install passport passport-local passport-jwt
+sudo npm install vm-browserify
+sudo npm install crypto-browserify stream-browserify

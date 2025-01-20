@@ -55,7 +55,7 @@
                 <i class="bi bi-person fs-5"></i>
               </button>
               <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="#">Acceder</a></li>
+                <li><a class="dropdown-item" href="/inicarseccion">Acceder</a></li>
                 <li><a class="dropdown-item" href="/registro">Registrar</a></li>
               </ul>
             </div>

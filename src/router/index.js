@@ -9,6 +9,7 @@ import TablaUsuarios from '@/components/TablaUsuarios.vue'
 import TablaComentarios from '@/components/TablaComentarios.vue'
 import TablaArticulos from '@/components/TablaArticulos.vue'
 import TablaRegistro from '@/components/TablaRegistro.vue'
+import TablaLogin from '@/components/TablaLogin.vue'
 
 const routes = [
   {
@@ -80,7 +81,16 @@ const routes = [
     name: 'registro',
 
     component: TablaRegistro
+  },
+
+  {
+    path: '/inicarseccion',
+    name: 'inicarseccion',
+
+    component: TablaLogin
   }
+
+
 ]
 
 const router = createRouter({

@@ -110,12 +110,12 @@
             <td class="align-middle">{{ usuario.nombre }}</td>
             <td class="align-middle">{{ usuario.email }}</td>
             <td class="align-middle">{{ usuario.movil }}</td>
-            <td class="align-middle">{{ usuario.tipo }}</td>
+            <td class="align-m GESTIÓN USUARIOSiddle">{{ usuario.tipo }}</td>
             <td class="align-middle">{{ usuario.baja }}</td>
             <td class="text-center align-middle table-warning">
               <div>
                 <button class="btn btn-warning m-2" @click="seleccionaUsuario(usuario)">
-                  <i class="fas fa-pencil-alt"></i>
+                  <i class="fa GESTIÓN USUARIOSs fa-pencil-alt"></i>
                 </button>
               </div>
             </td>
@@ -161,6 +161,7 @@ export default {
           id: "",
           nm: "",
         },
+        pass: "",
         baja: "",
         movil: "",
         tipo: "",
