@@ -32949,25 +32949,25 @@
       "tipo": "usuario"
     },
     {
-      "id": "cb4b",
-      "dni": "19939361V",
-      "alta": "20/1/2025",
-      "apellidos": "Pepa",
-      "nombre": "Pig",
+      "id": "0111",
+      "dni": "12345678Z",
+      "alta": "21/1/2025",
+      "apellidos": "admin",
+      "nombre": "admin",
       "direccion": "Vigo",
-      "email": "pepa@gmail.com",
+      "email": "admin@gmail.com",
       "provincia": {
-        "id": "17",
-        "nm": "Girona"
+        "id": "43",
+        "nm": "Tarragona"
       },
       "municipio": {
-        "id": "01022",
-        "nm": "Elciego"
+        "id": "02011",
+        "nm": "Ayna"
       },
-      "pass": "$2a$10$sq7TpLbC9IVVT2vkQpP1FereYzPIzOSJuRwYvolU0m61acG92mOMS",
+      "pass": "$2a$10$ASQ9nA8041P/Hl4VmthVou0yv6TEPc4coNKD9Yy/cwQVyZm7EL6PO",
       "baja": "",
-      "movil": "12345678",
-      "tipo": "usuario"
+      "movil": "1919191919",
+      "tipo": "admin"
     }
   ],
   "candidatos": [
@@ -33015,7 +33015,17 @@
       "nombre": "usuario"
     }
   ],
-  "comentarios": [],
+  "comentarios": [
+    {
+      "id": "e37b",
+      "clienteEmail": "admin@gmail.com",
+      "clienteMensaje": "Perfeto",
+      "fechaComentario": "21/1/2025",
+      "clienteMovil": "123456789",
+      "clienteValor": 5,
+      "lopd": true
+    }
+  ],
   "articulos": [
     {
       "id": "677f7c96",
@@ -33035,6 +33045,13 @@
       "precio": 1000,
       "stock": 236,
       "fechaAlta": "2025-01-10"
+    },
+    {
+      "id": "4e6b"
+    },
+    {
+      "id": "395c",
+      "query": "\n    query IntrospectionQuery {\n      __schema {\n        \n        queryType { name }\n        mutationType { name }\n        subscriptionType { name }\n        types {\n          ...FullType\n        }\n        directives {\n          name\n          description\n          \n          locations\n          args {\n            ...InputValue\n          }\n        }\n      }\n    }\n\n    fragment FullType on __Type {\n      kind\n      name\n      description\n      \n      fields(includeDeprecated: true) {\n        name\n        description\n        args {\n          ...InputValue\n        }\n        type {\n          ...TypeRef\n        }\n        isDeprecated\n        deprecationReason\n      }\n      inputFields {\n        ...InputValue\n      }\n      interfaces {\n        ...TypeRef\n      }\n      enumValues(includeDeprecated: true) {\n        name\n        description\n        isDeprecated\n        deprecationReason\n      }\n      possibleTypes {\n        ...TypeRef\n      }\n    }\n\n    fragment InputValue on __InputValue {\n      name\n      description\n      type { ...TypeRef }\n      defaultValue\n      \n      \n    }\n\n    fragment TypeRef on __Type {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n                ofType {\n                  kind\n                  name\n                  ofType {\n                    kind\n                    name\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  "
     }
   ],
   "secret": "your_secret_key"

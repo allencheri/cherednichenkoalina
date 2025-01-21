@@ -53,15 +53,15 @@
               </option>
             </select>
 
-            <span class="input-group-text curstom-span me-2 ms-2">Tipo</span>
-            <select class="form-select sm w-25" v-model="usuario.tipo">
+            <span class="input-group-text curstom-span me-2 ms-2" v-if="isAdmin">Tipo</span>
+            <select class="form-select sm w-25" v-if="isAdmin" v-model="usuario.tipo">
               <option value="" disabled>Tipo</option>
               <option v-for="tipo in tipos" :key="tipo.id" :value="tipo.nombre">{{ tipo.nombre }}</option>
             </select>
 
 
-            <span class="input-group-text curstom-span ms-3">Histórico</span>
-            <input id="historico" type="checkbox" class="form-check-input ms-2 me-4" v-model="isChecked" />
+            <span class="input-group-text curstom-span ms-3" v-if="isAdmin" >Histórico</span>
+            <input id="historico" type="checkbox" class="form-check-input ms-2 me-4" v-if="isAdmin" v-model="isChecked" />
 
             <button class="btn btn-light btn-sm p-0 m-1" style="border-radius: 10px" @click.prevent="resetForm()"><i
                 class="fa fa-refresh"></i></button>
@@ -73,11 +73,11 @@
               type="submit"><i class="bi bi-save2"></i>
               Alta
             </button>
-            <button class="btn btn-primary btn-custom me-2" style="border-radius: 10px"
+            <button class="btn btn-primary btn-custom me-2" v-if="isAdmin" style="border-radius: 10px"
               @click.prevent="modificarUsuario()" type="submit"><i class="bi bi-cloud-check"></i>
               Modificar
             </button>
-            <button class="btn btn-primary btn-custom me-2" style="border-radius: 10px"
+            <button class="btn btn-primary btn-custom me-2" v-if="isAdmin" style="border-radius: 10px"
               @click.prevent="eliminarUsuario()" type="submit"><i class="bi bi-trash3"></i>
               Eliminar
             </button>
@@ -88,7 +88,7 @@
   </div>
 
   <!-- Tabla -->
-  <div class="container my-2">
+  <div class="container my-2" v-if="isAdmin">
     <div class="table-responsive">
       <table class="table table-striped">
         <thead class="table-primary rounded-header text-center">
@@ -184,6 +184,7 @@ export default {
     this.getProvincias();
     this.getMunicipios();
     this.getTipos();
+    this.isAdmin = localStorage.getItem('isAdmin') === 'true';
   },
 
   computed: {

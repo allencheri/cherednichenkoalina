@@ -11,7 +11,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
 
-            <li class="nav">
+            <li class="nav" v-if="isAdmin">
               <router-link to="/" class="nav-link text-white" exact-active-class="active">Inicio</router-link>
             </li>
 
@@ -49,14 +49,18 @@
           </div>
 
           <div class="d-flex align-items-center">
-            <div class="dropdown">
+            <div class="dropdown m-2">
               <button class="btn btn-light btn-sm rounded-circle shadow-sm" type="button" id="dropdownMenuButton1"
                 data-bs-toggle="dropdown" aria-expanded="false" aria-label="Menú de usuario">
                 <i class="bi bi-person fs-5"></i>
               </button>
-              <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="/inicarseccion">Acceder</a></li>
+              <ul class="dropdown-menu dropdown-menu-end shadow-sm" 
+                  :class="{ show: isDropdownVisible }" 
+                  aria-labelledby="dropdownMenuButton1">
+                  
+                <li><a class="dropdown-item" href="/login">Acceder</a></li>
                 <li><a class="dropdown-item" href="/registro">Registrar</a></li>
+                <li><a class="dropdown-item" href="#" @click="logout">Cerrar sesión</a></li>
               </ul>
             </div>
           </div>
@@ -73,6 +77,31 @@
 <script>
 export default {
   name: "NavBar",
+  data() {
+    return {
+      isDropdownVisible: false,
+      isAdmin: false,
+    };
+  },
+  mounted() {
+    //Comprobar si el usuario está logueado
+    this.isAdmin = localStorage.getItem('isAdmin') === 'true';
+  },
+  methods: {
+    toggleDropdown() {
+      console.log("botón pulsado");
+      this.isDropdownVisible = !this.isDropdownVisible;
+    },
+
+    logout() {
+      localStorage.removeItem('isLogueado');
+      localStorage.removeItem('isAdmin');
+
+      this.$router.push({ name: 'login' }).then(() => {
+        window.location.reload();
+      });
+    }
+  }
 };
 </script>
 

@@ -20,46 +20,46 @@ const routes = [
   {
     path: '/usuarios',
     name: 'usuario',
-  
+
     component: TablaUsuarios
-    
+
   },
   {
     path: '/contacto',
     name: 'contacto',
-  
+
     component: TablaContacto
-    
+
   },
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    
+
     component: NotFound
   },
 
   {
     path: '/empleo',
     name: 'empleo',
-  
+
     component: TablaEmpleo
-    
+
   },
 
   {
     path: '/avisos-legales',
     name: 'avisoLegal',
-  
+
     component: AvisoLegal
-    
+
   },
 
   {
     path: '/privacidad',
     name: 'politicaPrivacidad',
-  
+
     component: PoliticaPrivacidad
-    
+
   },
 
   {
@@ -84,8 +84,8 @@ const routes = [
   },
 
   {
-    path: '/inicarseccion',
-    name: 'inicarseccion',
+    path: '/login',
+    name: 'login',
 
     component: TablaLogin
   }
@@ -98,4 +98,23 @@ const router = createRouter({
   routes
 })
 
-export default router
+//Guarda de navegación global
+router.beforeEach((to, from, next) => {
+  //Verificar si es administrador
+  if (to.meta.requiresAdmin) {
+    //Verifica si el usuario está logueado y si es administrador
+    const isLogueado = localStorage.getItem('isLogueado') === 'true';
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+
+    if (!isLogueado || !isAdmin) {
+      //Si no es administrador, redirige a otra ruta
+      next({ name: 'login' });
+    } else {
+      next(); //Permite el acceso a la ruta
+    }
+  } else {
+    next(); //Si no es necesaria la verificación de administrador, permite el acceso a la ruta
+  }
+})
+
+export default router;
