@@ -1,11 +1,11 @@
 <template>
     <div class="container my-5">
         <div class="row justify-content-center">
-            <div >
+            <div>
                 <div class="text-center my-4">
                     <h5 class="font-weight-bold text-uppercase text-primary position-relative d-inline-block">
                         <i class="bi bi-people-fill me-2"></i> Iniciar sesión
-                        
+
                     </h5>
                 </div>
 
@@ -26,8 +26,9 @@
                         </router-link>
                         <button type="submit" class="btn btn-primary">Iniciar sesión</button>
                     </div>
-                </form>
 
+                    <p class="mt-4">No tienes cuenta? <router-link to="/registro">Regístrate</router-link></p>
+                </form>
                 <!-- Mensaje de error -->
                 <div v-if="errorMessage" class="alert alert-danger mt-3">
                     {{ errorMessage }}
@@ -37,9 +38,32 @@
                 <div v-if="successMessage" class="alert alert-success mt-3">
                     {{ successMessage }}
                 </div>
+
+
+                <table class="table table-bordered mt-4">
+                    <tr>
+                        <td></td>
+                        <td><strong>Admin</strong></td>
+                        <td><strong>Usuario</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>DNI</strong></td>
+                        <td>12345678Z</td>
+                        <td>96355339J</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Contraseña</strong></td>
+                        <td>renaido</td>
+                        <td>123</td>
+                    </tr>
+                </table>
             </div>
         </div>
+
+       
     </div>
+
+    
 </template>
 
 
@@ -106,26 +130,33 @@ export default {
                 );
 
                 if (contrasenaCorrecta) {
-                    if(usuario.tipo === "admin"){          
+                    if (usuario.tipo === "admin" || usuario.tipo === "usuario") {
                         this.errorMessage = ""; // Limpiar mensaje de error si las credenciales son correctas
                         this.successMessage = "Inicio de sesión exitoso";
-
                         localStorage.setItem('isLogueado', 'true')
-                        localStorage.setItem('isAdmin', 'true')
 
+                        if (usuario.tipo === "admin") {
+                            localStorage.setItem('isAdmin', 'true')
+                            this.$router.push({ name: 'inicio' }).then(() => {
+                                window.location.reload();
+                            });
+                        }
+                        localStorage.setItem('isUsuario', 'true')
                         this.$router.push({ name: 'inicio' }).then(() => {
-                            window.location.reload(); 
+                            window.location.reload();
                         });
+                    } else {
+                        this.errorMessage = "DNI o contraseña incorrectos. Inténtalo de nuevo.";
+                        this.successMessage = "";
+                        this.resetForm();
                     }
                 } else {
                     this.errorMessage = "DNI o contraseña incorrectos. Inténtalo de nuevo.";
                     this.successMessage = "";
                     this.resetForm();
                 }
-            } else {
-                this.errorMessage = "DNI o contraseña incorrectos. Inténtalo de nuevo.";
-                this.successMessage = "";
-                this.resetForm();
+            }else{
+                this.errorMessage = "Usuario no existe. Inténtalo de nuevo.";
             }
         }
     }

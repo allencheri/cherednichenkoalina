@@ -32724,9 +32724,10 @@
         "id": "23010",
         "nm": "Bailén"
       },
+      "pass": "$2a$10$uTWMFIOYnpvrWTdvKbNgu.9Z/amj14g57PYY4dNX//ozIONfTRLZO",
       "baja": "",
       "movil": "712341234",
-      "tipo": "admin"
+      "tipo": "usuario"
     },
     {
       "id": "9a2b",
@@ -32744,6 +32745,7 @@
         "id": "28079",
         "nm": "Madrid"
       },
+      "pass": "$2a$10$uTWMFIOYnpvrWTdvKbNgu.9Z/amj14g57PYY4dNX//ozIONfTRLZO",
       "baja": "13/12/2024",
       "movil": "612345678",
       "tipo": "usuario"
@@ -32764,6 +32766,7 @@
         "id": "08019",
         "nm": "Barcelona"
       },
+      "pass": "$2a$10$uTWMFIOYnpvrWTdvKbNgu.9Z/amj14g57PYY4dNX//ozIONfTRLZO",
       "baja": "",
       "movil": "622334455",
       "tipo": "usuario"
@@ -32784,6 +32787,7 @@
         "id": "46020",
         "nm": "Valencia"
       },
+      "pass": "$2a$10$uTWMFIOYnpvrWTdvKbNgu.9Z/amj14g57PYY4dNX//ozIONfTRLZO",
       "baja": "",
       "movil": "633445566",
       "tipo": "usuario"
@@ -32804,6 +32808,7 @@
         "id": "41091",
         "nm": "Sevilla"
       },
+      "pass": "$2a$10$uTWMFIOYnpvrWTdvKbNgu.9Z/amj14g57PYY4dNX//ozIONfTRLZO",
       "baja": "02/12/2024",
       "movil": "644556677",
       "tipo": "usuario"
@@ -32824,6 +32829,7 @@
         "id": "18050",
         "nm": "Granada"
       },
+      "pass": "$2a$10$uTWMFIOYnpvrWTdvKbNgu.9Z/amj14g57PYY4dNX//ozIONfTRLZO",
       "baja": "",
       "movil": "655667788",
       "tipo": "usuario"
@@ -32844,6 +32850,7 @@
         "id": "03002",
         "nm": "Alicante"
       },
+      "pass": "$2a$10$uTWMFIOYnpvrWTdvKbNgu.9Z/amj14g57PYY4dNX//ozIONfTRLZO",
       "baja": "",
       "movil": "688778899",
       "tipo": "usuario"
@@ -32864,6 +32871,7 @@
         "id": "50260",
         "nm": "Zaragoza"
       },
+      "pass": "$2a$10$uTWMFIOYnpvrWTdvKbNgu.9Z/amj14g57PYY4dNX//ozIONfTRLZO",
       "baja": "",
       "movil": "677889900",
       "tipo": "usuario"
@@ -32884,6 +32892,7 @@
         "id": "12019",
         "nm": "Castellón"
       },
+      "pass": "$2a$10$uTWMFIOYnpvrWTdvKbNgu.9Z/amj14g57PYY4dNX//ozIONfTRLZO",
       "baja": "",
       "movil": "611223344",
       "tipo": "usuario"
@@ -32904,6 +32913,7 @@
         "id": "30030",
         "nm": "Murcia"
       },
+      "pass": "$2a$10$uTWMFIOYnpvrWTdvKbNgu.9Z/amj14g57PYY4dNX//ozIONfTRLZO",
       "baja": "",
       "movil": "699334455",
       "tipo": "usuario"
@@ -32924,6 +32934,7 @@
         "id": "14037",
         "nm": "Córdoba"
       },
+      "pass": "$2a$10$uTWMFIOYnpvrWTdvKbNgu.9Z/amj14g57PYY4dNX//ozIONfTRLZO",
       "baja": "",
       "movil": "611556677",
       "tipo": "usuario"
@@ -32944,6 +32955,7 @@
         "id": "21030",
         "nm": "Huelva"
       },
+      "pass": "$2a$10$uTWMFIOYnpvrWTdvKbNgu.9Z/amj14g57PYY4dNX//ozIONfTRLZO",
       "baja": "",
       "movil": "662778899",
       "tipo": "usuario"
@@ -32968,6 +32980,27 @@
       "baja": "",
       "movil": "1919191919",
       "tipo": "admin"
+    },
+    {
+      "id": "7d21",
+      "dni": "96355339J",
+      "alta": "22/1/2025",
+      "apellidos": "Prueba",
+      "nombre": "Prueba",
+      "direccion": "fdgdfg",
+      "email": "hfhgf@gdf.dfg",
+      "provincia": {
+        "id": "16",
+        "nm": "Cuenca"
+      },
+      "municipio": {
+        "id": "01013",
+        "nm": "Barrundia"
+      },
+      "pass": "$2a$10$uTWMFIOYnpvrWTdvKbNgu.9Z/amj14g57PYY4dNX//ozIONfTRLZO",
+      "baja": "",
+      "movil": "5645646",
+      "tipo": "usuario"
     }
   ],
   "candidatos": [
@@ -33017,12 +33050,30 @@
   ],
   "comentarios": [
     {
-      "id": "e37b",
+      "id": "39f9",
       "clienteEmail": "admin@gmail.com",
-      "clienteMensaje": "Perfeto",
-      "fechaComentario": "21/1/2025",
+      "clienteMensaje": "Perfecto",
+      "fechaComentario": "23/1/2025",
       "clienteMovil": "123456789",
       "clienteValor": 5,
+      "lopd": true
+    },
+    {
+      "id": "b9af",
+      "clienteEmail": "marta.rey@gmail.com",
+      "clienteMensaje": "Super",
+      "fechaComentario": "23/1/2025",
+      "clienteMovil": "712341234",
+      "clienteValor": 4,
+      "lopd": true
+    },
+    {
+      "id": "d6af",
+      "clienteEmail": "ana.sanchez@gmail.com",
+      "clienteMensaje": "wow",
+      "fechaComentario": "23/1/2025",
+      "clienteMovil": "622334355",
+      "clienteValor": 4,
       "lopd": true
     }
   ],

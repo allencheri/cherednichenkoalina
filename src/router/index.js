@@ -10,12 +10,26 @@ import TablaComentarios from '@/components/TablaComentarios.vue'
 import TablaArticulos from '@/components/TablaArticulos.vue'
 import TablaRegistro from '@/components/TablaRegistro.vue'
 import TablaLogin from '@/components/TablaLogin.vue'
+import PanelGestion from '@/components/PanelGestion.vue'
+import PaginaTienda from '@/components/PaginaTienda.vue'
 
 const routes = [
   {
     path: '/',
     name: 'inicio',
+
     component: PaginaInicio
+  },
+  {
+    path: '/gestion',
+    name: 'gestion',
+    component: PanelGestion
+  },
+  {
+    path: '/tienda',
+    name: 'tienda',
+
+    component: PaginaTienda
   },
   {
     path: '/usuarios',

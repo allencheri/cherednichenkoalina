@@ -1,7 +1,7 @@
 <template>
     <div class="text-center my-4">
-        <h3 class="font-weight-bold text-uppercase text-primary position-relative d-inline-block mt-4">
-            <i class="bi bi-file-earmark-person"></i>
+        <h3 class="font-weight-bold text-uppercase text-primary position-relative d-inline-block mt-4 ">
+            <i class="bi bi-file-earmark-person "></i>
             TRABAJA CON NOSOTROS
             <span class="underline-effect"></span>
             <router-link to="/" class="btn btn-custom"><i class="bi bi-arrow-return-left me-2"></i></router-link>
@@ -27,10 +27,11 @@
 
                 <div class="input-group-text mb-3">
                     <span class="input-group-text me-2">Departamento:</span>
-                    <select name="provincia" id="provincia" class="form-select w-50">
+                    <select name="provincia" id="provincia" class="form-select w-50" v-model="datosEmpleado.categoria">
                         <option value="" disabled>Departamento</option>
                         <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.nombre">
-                            {{ categoria.nombre }}</option>
+                            {{ categoria.nombre }}
+                        </option>
                     </select>
 
                     <span class="input-group-text cuatom-span ms-4">Modalidad</span>
@@ -75,8 +76,8 @@
                     @click.prevent="grabarCandidato()" value="Enviar">
             </form>
 
-            <div class="container my-2 mt-5 mb-5">
-                <div class="table-responsive">
+            <div class="container my-2 mt-5 mb-5" >
+                <div class="table-responsive" v-if="isAdmin">
 
                     <h4 class="font-weight-bold text-uppercase text-primary position-relative d-inline-block mb-4">
                         <i class="bi bi-file-earmark-person"></i>
@@ -165,6 +166,8 @@ export default {
     mounted() {
         this.getDepartamento();
         this.getCandidatos();
+        this.isAdmin = localStorage.getItem('isAdmin') === 'true';
+
     },
 
     computed: {
@@ -184,6 +187,7 @@ export default {
             if (this.datosEmpleado.apellidos && this.datosEmpleado.nombre && this.datosEmpleado.email && this.datosEmpleado.movil && this.datosEmpleado.modalidad) {
                 if (this.datosEmpleado.avisolegal) {
                     if (this.datosEmpleado.comentarios.length > 256) this.datosEmpleado.comentarios = "";
+
                     try {
                         const response = await fetch('http://localhost:3000/candidatos');
                         if (!response.ok) {
@@ -273,7 +277,7 @@ export default {
                         body: JSON.stringify(candidatoExistente)
                     });
 
-                    this.mostrarAlerta("Aviso", "Candidato dado de baja correctamente", "success")
+                    this.mostrarAlerta("Aviso", "Candidato eliminado correctamente", "success")
                     this.getCandidatos();
                 } else {
                     this.mostrarAlerta("Error", "Candidato no encontrado", "error")

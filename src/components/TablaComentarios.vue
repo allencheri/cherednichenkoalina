@@ -1,10 +1,14 @@
 <template>
-    <h3 class="font-weight-bold text-uppercase text-primary position-relative d-inline-block mt-4">
+    <h3 class="font-weight-bold text-uppercase text-primary position-relative d-inline-block mt-4 ">
         <i class="bi bi-chat-left-text"></i>
         ZONA DE COMENTARIOS
         <span class="underline-effect"></span>
         <router-link to="/" class="btn btn-custom"><i class="bi bi-arrow-return-left me-2"></i></router-link>
-    </h3>
+    </h3><br>
+
+    <span style="color:gray">*Solo los usuarios registrados pueden comentar.</span><br>
+
+    <a class="link-underline link-underline-opacity-0" href="/registro">Registrarse</a>
 
     <div class="container-fluid border p-4 mt-5">
         <div class="col-10 col-m-6 col-lg-6 mx-auto w-100">
@@ -40,8 +44,21 @@
                     <label>He leido y acepto la <a href="/privacidad">Política de Privacidad</a></label>
                 </div>
 
-                <input class="btn btn-primary m-2 mt-4 col-2 p-2 text-align-center" type="submit"
-                    @click.prevent="grabarComentario()" value="Enviar">
+                <div>
+                    <div v-if="isLogueado">
+                        <input  class="btn btn-primary m-2 mt-4 col-2 p-2 text-align-center" type="submit" 
+                        @click.prevent="grabarComentario()" value="Enviar">
+                    </div>
+                    <div v-else >
+                        <a href="/login" class="btn btn-light m-2 mt-4 col-2 p-2 w-25 text-align-center" >Iniciar sesión</a>
+                        <p style="color:#A9A9A9">Tienes que iniciar sesión para poder comentar.</p>
+                    </div>
+                    
+                     
+                    
+                </div>
+
+
             </form>
         </div>
     </div>
@@ -62,7 +79,7 @@
                         <th scope="col" class="w-10 align-middle">Email</th>
                         <th scope="col" class="w-10 align-middle">Mensaje</th>
                         <th scope="col" class="w-10 align-middle">Valoración</th>
-                        <th scope="col" class="pale-yellow text-center bg-warning">
+                        <th v-if="isAdmin" scope="col" class="pale-yellow text-center bg-warning">
                             Acciones
                         </th>
                     </tr>
@@ -74,7 +91,7 @@
                         <td class="align-middle">{{ comentario.clienteEmail }}</td>
                         <td class="align-middle">{{ comentario.clienteMensaje }}</td>
                         <td class="align-middle">{{ comentario.clienteValor }}</td>
-                        <td class="text-center align-middle table-warning">
+                        <td class="text-center align-middle table-warning" v-if="isAdmin">
                             <div>
                                 <button class="btn btn-warning m-2" @click="seleccionaComentario(comentario)">
                                     <i class="fas fa-pencil-alt"></i>
@@ -105,7 +122,7 @@ export default {
                 fechaComentario: "",
                 clienteMovil: "",
                 clienteValor: "",
-                lopd: false,
+                lopd: false
             },
             comentarios: []
         };
@@ -113,6 +130,8 @@ export default {
 
     mounted() {
         this.getComentarios();
+        this.isLogueado = localStorage.getItem('isLogueado') === 'true';
+        this.isAdmin = localStorage.getItem('isAdmin') === 'true';
     },
 
     methods: {
@@ -122,6 +141,7 @@ export default {
 
         async grabarComentario() {
             if (this.comentario.clienteEmail && this.comentario.clienteMovil && this.comentario.lopd) {
+
                 try {
                     const usuariosResponse = await fetch('http://localhost:3000/usuarios');
                     if (!usuariosResponse.ok) {
@@ -132,10 +152,10 @@ export default {
                     const usuarioExistente = usuarios.find(u => u.email === this.comentario.clienteEmail);
 
                     if (usuarioExistente) {
-                        this.comentario.fechaComentario = new Date().toLocaleDateString(); 
+                        this.comentario.fechaComentario = new Date().toLocaleDateString();
 
                         if (this.comentario.id) {
-                          
+
                             const comentarioResponse = await fetch(`http://localhost:3000/comentarios/${this.comentario.id}`, {
                                 method: 'PUT',
                                 headers: {
@@ -148,7 +168,7 @@ export default {
                                 throw new Error('Error al actualizar el comentario: ' + comentarioResponse.statusText);
                             }
 
-                           
+
                             const index = this.comentarios.findIndex(c => c.id === this.comentario.id);
                             if (index !== -1) {
                                 this.comentarios[index] = { ...this.comentario };
@@ -156,7 +176,7 @@ export default {
 
                             this.mostrarAlerta('Aviso', 'Comentario actualizado correctamente', 'success');
                         } else {
-                          
+
                             const comentarioResponse = await fetch('http://localhost:3000/comentarios', {
                                 method: 'POST',
                                 headers: {
@@ -176,11 +196,14 @@ export default {
 
                         this.resetForm();
                     } else {
-                        this.mostrarAlerta('Error', 'El email no está registrado como usuario.', 'error');
+                        this.mostrarAlerta('Error', 'Tiene que registrarse para comentar.', 'error');
                     }
+
+
                 } catch (error) {
                     console.error(error);
                 }
+
             } else {
                 this.mostrarAlerta('Error', 'Por favor, completa todos los campos requeridos.', 'error');
             }
