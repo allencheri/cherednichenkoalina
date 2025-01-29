@@ -5,6 +5,7 @@ import morgan from "morgan";
 import mongoose from "mongoose";
 import rutas from "./router/rutas.mjs";
 import cors from 'cors';
+import files from "./router/files.mjs";
 
 // creamos un servidor
 const app = express();
@@ -19,11 +20,15 @@ app.use(cors({
 app.use(morgan("dev"));
 app.use(express.json());
 
-// eligimos el puerto
-app.use(morgan("dev"));
-app.use(express.json());
+app.use('/files', filesRouter);
+
+const upload = multer({ dest: 'uploads/' });
+app.use(upload.single("archivo"));
+
 app.use(rutas);
+
 app.set("port", process.env.PORT || 5000);
+
 app.get("/", (req, res) => {
   res.send("Servidor en Marcha");
 });

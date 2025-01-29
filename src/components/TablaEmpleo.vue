@@ -63,7 +63,8 @@
 
                 <div class="input-group-text mb-3">
                     <span class="input-group-text me-2">CV(PDF)</span>
-                    <input type="file" class="form-control sm w-100">
+                    <input type="file" placeholder="Selecciona un archivo" class="form-control ms-2" id="cv"
+                        accept=".pdf" @change="handleChangeCV" ref="cv">
                 </div>
 
                 <div class="container text-center mt-4">
@@ -76,7 +77,7 @@
                     @click.prevent="grabarCandidato()" value="Enviar">
             </form>
 
-            <div class="container my-2 mt-5 mb-5" >
+            <div class="container my-2 mt-5 mb-5">
                 <div class="table-responsive" v-if="isAdmin">
 
                     <h4 class="font-weight-bold text-uppercase text-primary position-relative d-inline-block mb-4">
@@ -181,50 +182,57 @@ export default {
 
     methods: {
 
-
         async grabarCandidato() {
-
             if (this.datosEmpleado.apellidos && this.datosEmpleado.nombre && this.datosEmpleado.email && this.datosEmpleado.movil && this.datosEmpleado.modalidad) {
                 if (this.datosEmpleado.avisolegal) {
                     if (this.datosEmpleado.comentarios.length > 256) this.datosEmpleado.comentarios = "";
 
                     try {
-                        const response = await fetch('http://localhost:3000/candidatos');
-                        if (!response.ok) {
-                            throw new Error(`Error en la solicitud: ${response.status} - ${response.statusText}`);
-                        }
+                        // Subir archivo CV primero
+                        let filePath = "";
+                        if (this.datosEmpleado.cv) {
+                            const formData = new FormData();
+                            formData.append("archivo", this.datosEmpleado.cv);
 
-                        const candidatosExistentes = await response.json();
-
-                        // Verificar si el email ya está registrado
-                        const candidatoExistente = candidatosExistentes.find(c => c.email === this.datosEmpleado.email);
-
-                        if (candidatoExistente) {
-                            // Si el email ya existe, mostrar un mensaje de error
-                            this.mostrarAlerta('Error', 'El email ya está registrado.', 'error');
-                        } else {
-                            // Si el DNI no existe, agregar el usuario a la base de datos
-                            const crearResponse = await fetch('http://localhost:3000/candidatos', {
+                            const uploadResponse = await fetch('http://localhost:5000/upload', {
                                 method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify(this.datosEmpleado)
+                                body: formData
                             });
 
-                            if (!crearResponse.ok) {
-                                throw new Error('Error al guardar el empleado: ' + crearResponse.statusText);
-                            }
+                            if (!uploadResponse.ok) throw new Error('Error al subir el archivo');
 
-                            const nuevoCandidato = await crearResponse.json();
-                            this.candidatos.push(nuevoCandidato);
-                            this.mostrarAlerta('Aviso', 'Candidatura Enviada', 'success');
-                            this.resetForm();
+                            const uploadResult = await uploadResponse.json();
+                            filePath = uploadResult.filePath;
                         }
 
+                        // Guardar candidato con la URL del archivo en MongoDB
+                        const candidatoData = {
+                            nombre: this.datosEmpleado.nombre,
+                            apellidos: this.datosEmpleado.apellidos,
+                            email: this.datosEmpleado.email,
+                            movil: this.datosEmpleado.movil,
+                            categoria: this.datosEmpleado.categoria,
+                            modalidad: this.datosEmpleado.modalidad,
+                            avisolegal: this.datosEmpleado.avisolegal,
+                            comentarios: this.datosEmpleado.comentarios,
+                            cv: filePath // Guardar la ruta del archivo
+                        };
+
+                        const crearResponse = await fetch('http://localhost:5000/candidatos', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(candidatoData)
+                        });
+
+                        if (!crearResponse.ok) throw new Error('Error al guardar el candidato');
+
+                        const nuevoCandidato = await crearResponse.json();
+                        this.candidatos.push(nuevoCandidato);
+                        this.mostrarAlerta('Aviso', 'Candidatura Enviada', 'success');
+                        this.resetForm();
                     } catch (error) {
-                        console.error('Error al conectar con el servidor:', error.message);
-                        this.mostrarAlerta('Error', 'No se pudo conectar con el servidor.', 'error');
+                        console.error('Error:', error.message);
+                        this.mostrarAlerta('Error', 'No se pudo completar la solicitud.', 'error');
                     }
                 } else {
                     this.mostrarAlerta('Error', 'Debe aceptar la política de privacidad para continuar', 'error');
@@ -233,6 +241,7 @@ export default {
                 this.mostrarAlerta('Error', 'Por favor, completa todos los campos requeridos.', 'error');
             }
         },
+
 
 
         async seleccionaCandidato(candidato) {
@@ -370,7 +379,29 @@ export default {
                 cv: "",
                 categoria: "",
                 modalidad: "",
-                avisolegal: ""
+                avisolegal: "",
+            }
+        },
+
+        handleChangeCV(event) {
+            this.cv = event.target.files[0];
+            console.log(this.cv);
+        },
+
+        async guardarCV() {
+            try{
+                const formData = new FormData();
+                formData.append("archivo", this.cv);
+
+                const uploadResponse = await fetch('http://localhost:5000/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!uploadResponse.ok) throw new Error('Error al subir el archivo');
+
+                const uploadResult = await uploadResponse.json();
+                this.datosEmpleado.cv = uploadResult.filePath;
             }
         },
 
