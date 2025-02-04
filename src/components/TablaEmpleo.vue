@@ -1,10 +1,12 @@
 <template>
     <div>
         <div class="row d-flex align-items-center">
-            <h5 class="text-center front-weight-bold text-primary p-3 underline-effect"><i
-                    class="bi bi-person-workspace m-2"></i>
-                Trabaja con nosotros <router-link to="/"><i
-                        class="bi bi-arrow-return-left me-2 black"></i></router-link> </h5>
+            <h2 class="font-weight-bold text-uppercase text-primary position-relative d-inline-block mt-4">
+            <i class="bi bi-person-workspace"></i>
+            Trabaja con nosotros
+            <span class="underline-effect"></span>
+            <router-link to="/" class="btn btn-custom"><i class="bi bi-arrow-return-left me-2"></i></router-link>
+        </h2>
 
 
         </div>

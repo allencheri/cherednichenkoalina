@@ -45,7 +45,7 @@
                   </tr>
               </tbody>
           </table>
-          <div class="d-flex justify-content-center my-3">
+          <div class="d-flex justify-content-center my-3 mb-5">
               <button class="btn btn-primary" :disabled="currentPage === 1" @click="paginaAnterior">
                   <i class="bi bi-chevron-left"></i>
               </button>
