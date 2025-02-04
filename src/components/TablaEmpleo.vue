@@ -1,137 +1,137 @@
 <template>
-    <div class="text-center my-4">
-        <h3 class="font-weight-bold text-uppercase text-primary position-relative d-inline-block mt-4 ">
-            <i class="bi bi-file-earmark-person "></i>
-            TRABAJA CON NOSOTROS
-            <span class="underline-effect"></span>
-            <router-link to="/" class="btn btn-custom"><i class="bi bi-arrow-return-left me-2"></i></router-link>
-        </h3>
+    <div>
+        <div class="row d-flex align-items-center">
+            <h5 class="text-center front-weight-bold text-primary p-3 underline-effect"><i
+                    class="bi bi-person-workspace m-2"></i>
+                Trabaja con nosotros <router-link to="/"><i
+                        class="bi bi-arrow-return-left me-2 black"></i></router-link> </h5>
+
+
+        </div>
     </div>
+    <div class="container">
+        <div class="border p-4 mx-auto">
+            <form @submit.prevent="grabarCandidato" class="d-inline">
 
-    <div class="container-fluid border p-4 mt-5">
-        <div class="col-10 col-m-6 col-lg-6 mx-auto w-100">
-            <form class="form-in-line">
                 <div class="input-group-text mb-3">
-                    <span class="input-group-text me-2">Apellidos</span>
+                    <span class="input-group-text custom-span me-2">Apellidos: </span>
                     <input type="text" class="form-control sm w-50" placeholder="Apellidos"
-                        v-model="datosEmpleado.apellidos">
-                    <span class="input-group-text me-2 ms-4">Nombre</span>
-                    <input type="text" class="form-control sm w-50" placeholder="Nombre" v-model="datosEmpleado.nombre">
-                </div>
-                <div class="input-group-text mb-3">
-                    <span class="input-group-text me-2">Email</span>
-                    <input type="text" class="form-control sm w-50" placeholder="Email" v-model="datosEmpleado.email">
-                    <span class="input-group-text me-2 ms-4">Movil</span>
-                    <input type="text" class="form-control sm w-25" placeholder="Movil" v-model="datosEmpleado.movil">
+                        v-model="empleado.apellidos">
+                    <span class="input-group-text custom-span mx-2">Nombre: </span>
+                    <input type="text" placeholder="Nombre" class="form-control sm w-50" v-model="empleado.nombre">
                 </div>
 
                 <div class="input-group-text mb-3">
-                    <span class="input-group-text me-2">Departamento:</span>
-                    <select name="provincia" id="provincia" class="form-select w-50" v-model="datosEmpleado.categoria">
+                    <span class="input-group-text custom-span me-2">Email: </span>
+                    <input type="text" class="form-control sm w-75" placeholder="Email" v-model="empleado.email"
+                        @blur="validarEmail(this.empleado.email)">
+
+                    <span class="input-group-text custom-span mx-2 ms-2">Móvil: </span>
+                    <input type="text" class="form-control sm w-25 " placeholder="Móvil" v-model="empleado.movil"
+                        @blur="validarMovil(this.empleado.movil)">
+                </div>
+
+                <div class="input-group-text mb-3">
+                    <span class="input-group-text custom-span me-2">Departamento: </span>
+                    <select name="provincia" id="provincia" class="form-select w-50" v-model="empleado.categoria">
                         <option value="" disabled>Departamento</option>
-                        <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.nombre">
-                            {{ categoria.nombre }}
-                        </option>
+                        <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.nombre">{{
+                            categoria.nombre }}</option>
                     </select>
 
-                    <span class="input-group-text cuatom-span ms-4">Modalidad</span>
+                    <span class="input-group-text custom-span mx-2">Modalidad: </span>
                     <div class="d-flex justify-content-evenly align-items-center w-50 flex-wrap">
                         <div>
-                            <input id="remoto" class="form-check-input ms-2" type="radio" name="modalidad"
-                                v-model="datosEmpleado.modalidad" value="Remoto">
+                            <input id="remoto" class="form-check-input ms-2 " type="radio" name="modalidad"
+                                v-model="empleado.modalidad" value="Remoto">
                             <label for="remoto" class="custom-span me-2 ms-1">Remoto</label>
                         </div>
+
                         <div>
-                            <input id="hibrido" class="form-check-input ms-2" type="radio" name="modalidad"
-                                v-model="datosEmpleado.modalidad" value="Hibrido">
-                            <label for="hibrido" class="custom-span me-2 ms-1">Híbrido</label>
+                            <input id="hibrido" class="form-check-input ms-2 " type="radio" name="modalidad"
+                                v-model="empleado.modalidad" value="Híbrido">
+                            <label for="hibrido" class="custom-span me-2  ms-1">Híbrido</label>
                         </div>
+
                         <div>
-                            <input id="presencial" class="form-check-input ms-2" type="radio" name="modalidad"
-                                v-model="datosEmpleado.modalidad" value="Presencial">
-                            <label for="presencial" class="custom-span me-2 ms-1">Presencial</label>
+                            <input id="presencial" class="form-check-input ms-2 " type="radio" name="modalidad"
+                                v-model="empleado.modalidad" value="Presencial">
+                            <label for="presencial" class="custom-span me-2  ms-1">Presencial</label>
                         </div>
                     </div>
 
                 </div>
 
-                <div class="input-group-text mb-3 w-100  flex-column">
-                    <span for="comentarios" class="input-group-text mb-2 mt-2">Comentarios: </span>
-                    <textarea id="comentarios" placeholder="Comentarios (máximo 256 caracteres)"
-                        class="form-control ms-2 w-100" rows="4" maxlength="256"></textarea>
-                </div>
-
                 <div class="input-group-text mb-3">
-                    <span class="input-group-text me-2">CV(PDF)</span>
-                    <input type="file" placeholder="Selecciona un archivo" class="form-control ms-2" id="cv"
-                        accept=".pdf" @change="handleChangeCV" ref="cv">
+                    <span class="input-group-text custom-span me-2 h-100 p-3">Comentarios: </span>
+                    <textarea class="form-control w-100" v-model="empleado.comentarios"
+                        placeholder="Comentarios (máximo 256 caracteres)"
+                        @blur="validarComentario(this.empleado.comentarios)"></textarea>
                 </div>
 
-                <div class="container text-center mt-4">
-                    <input type="checkbox" v-model="datosEmpleado.avisolegal" class="me-2">He leido y acepto la
-                    <router-link to="/privacidad">Politica de privacidad</router-link>
-                </div><br>
+                <div class="input-group-text mb-3 ">
+                    <span class="input-group-text custom-span me-2">CV (.pdf): </span>
+                    <input type="file" class="form-control sm w-100" placeholder="" accept=".pdf, .jpg, .jpeg"
+                        @change="handleFileChange" ref="fileInput">
 
-
+                </div>
+                <div class="container text-center">
+                    <input type="checkbox" v-model="empleado.avisolegal"> He leído y acepto la
+                    <router-link to="/privacidad">Política de privacidad</router-link>
+                </div>
                 <input class="btn btn-primary m-2 col-2 p-2 text-align-center" type="submit"
                     @click.prevent="grabarCandidato()" value="Enviar">
             </form>
-
-            <div class="container my-2 mt-5 mb-5">
-                <div class="table-responsive" v-if="isAdmin">
-
-                    <h4 class="font-weight-bold text-uppercase text-primary position-relative d-inline-block mb-4">
-                        <i class="bi bi-file-earmark-person"></i>
-                        GESTIÓN CANDIDATOS
-                        <span class="underline-effect"></span>
-                    </h4>
-
-                    <table class="table table-striped">
-                        <thead class="table-primary rounded-header text-center">
-                            <tr>
-                                <th scope="col" class="w-10 align-middle">Nombre</th>
-                                <th scope="col" class="w-5 align-middle">Apellidos</th>
-                                <th scope="col" class="w-10 align-middle">Email</th>
-                                <th scope="col" class="w-10 align-middle">Movil</th>
-                                <th scope="col" class="w-10 align-middle">Departamento</th>
-                                <th scope="col" class="w-5 align-middle">Modalidad</th>
-                                <th scope="col" class="pale-yellow text-center bg-warning">
-                                    Acciones
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="candidato in candidatos" :key="candidato.movil">
-                                <td class="align-middle">{{ candidato.nombre }}</td>
-                                <td class="align-middle">{{ candidato.apellidos }}</td>
-                                <td class="align-middle">{{ candidato.email }}</td>
-                                <td class="align-middle">{{ candidato.movil }}</td>
-                                <td class="align-middle">{{ candidato.categoria }}</td>
-                                <td class="align-middle">{{ candidato.modalidad }}</td>
-                                <td class="text-center align-middle table-warning">
-                                    <div>
-                                        <button class="btn btn-warning m-2" @click="seleccionaCandidato(candidato)">
-                                            <i class="fas fa-pencil-alt"></i>
-                                        </button>
-                                        <button class="btn btn-danger m-2" @click="deleteCandidato(candidato)">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
         </div>
 
 
+        <div class="container" v-if="isAdmin">
+            <h5 class="text-primary p-5"><i class="bi bi-tools m-2"></i>Gestión de Candidatos</h5>
+            <table class="table table-striped mt-2">
+                <thead>
+                    <tr class="table-primary">
+                        <th scope="col" class="w-15 text-center align-middle">Apellidos</th>
+                        <th scope="col" class="w-25 text-start  align-middle">Nombre</th>
+                        <th scope="col" class="w-20 text-center align-middle">Email</th>
+                        <th scope="col" class="w-10 text-center align-middle">Móvil</th>
+                        <th scope="col" class="w-10 text-center align-middle">Categoría</th>
+                        <th scope="col" class="w-10 text-center align-middle">Modalidad</th>
+                        <th scope="col" class="table-info text-center align-middle">Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="empleado in candidatosPorPagina" :key="empleado.id" style="height: 50px;">
+                        <td class="text-start align-middle">{{ empleado.apellidos }}</td>
+                        <td class="text-start align-middle">{{ empleado.nombre }}</td>
+                        <td class="text-center align-middle">{{ empleado.email }}</td>
+                        <td class="text-start align-middle">{{ empleado.movil }}</td>
+                        <td class="text-start align-middle">{{ empleado.categoria }}</td>
+                        <td class="text-start align-middle">{{ empleado.modalidad }}</td>
+                        <td class="text-center align-middle table-info">
+                            <div v-if="empleado.nombre !== ''">
+                                <button class="btn btn-warning m-2" @click="seleccionaCandidato(empleado)">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </button>
+                                <button class="btn btn-danger m-2" @click="deleteCandidato(empleado)"><i
+                                        class="bi bi-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-center my-3">
+                <button class="btn btn-primary" :disabled="currentPage === 1" @click="paginaAnterior">
+                    <i class="bi bi-chevron-left"></i>
+                </button>
+                <span class="mx-3 align-self-center"> Página {{ currentPage }}</span>
+                <button class="btn btn-primary" :disabled="currentPage * pageSize >= this.candidatos.length"
+                    @click="siguientePagina">
+                    <i class="bi bi-chevron-right"></i>
+                </button>
+            </div>
 
+        </div>
     </div>
-
-
-
 </template>
 
 <script>
@@ -145,7 +145,7 @@ export default {
 
     data() {
         return {
-            datosEmpleado: {
+            empleado: {
                 apellidos: "",
                 nombre: "",
                 email: "",
@@ -160,20 +160,22 @@ export default {
             categorias: [],
             pageSize: 5,
             currentPage: 1,
-            editEmail: true,
+            // cargado: false,
+            isAdmin: false,
+            archivo: null
         }
     },
 
     mounted() {
-        this.getDepartamento();
+        this.getDepartamentos();
         this.getCandidatos();
-        this.isAdmin = localStorage.getItem('isAdmin') === 'true';
-
+        this.isAdmin = localStorage.getItem("isAdmin") === "true"
     },
 
     computed: {
         candidatosPorPagina() {
             const indiceInicial = (this.currentPage - 1) * this.pageSize;
+
             return this.candidatos.slice(indiceInicial, indiceInicial + this.pageSize);
         },
 
@@ -183,69 +185,90 @@ export default {
     methods: {
 
         async grabarCandidato() {
-            if (this.datosEmpleado.apellidos && this.datosEmpleado.nombre && this.datosEmpleado.email && this.datosEmpleado.movil && this.datosEmpleado.modalidad) {
-                if (this.datosEmpleado.avisolegal) {
-                    if (this.datosEmpleado.comentarios.length > 256) this.datosEmpleado.comentarios = "";
-
-                    try {
-                        // Subir archivo CV primero
-                        let filePath = "";
-                        if (this.datosEmpleado.cv) {
-                            const formData = new FormData();
-                            formData.append("archivo", this.datosEmpleado.cv);
-
-                            const uploadResponse = await fetch('http://localhost:5000/upload', {
-                                method: 'POST',
-                                body: formData
-                            });
-
-                            if (!uploadResponse.ok) throw new Error('Error al subir el archivo');
-
-                            const uploadResult = await uploadResponse.json();
-                            filePath = uploadResult.filePath;
-                        }
-
-                        // Guardar candidato con la URL del archivo en MongoDB
-                        const candidatoData = {
-                            nombre: this.datosEmpleado.nombre,
-                            apellidos: this.datosEmpleado.apellidos,
-                            email: this.datosEmpleado.email,
-                            movil: this.datosEmpleado.movil,
-                            categoria: this.datosEmpleado.categoria,
-                            modalidad: this.datosEmpleado.modalidad,
-                            avisolegal: this.datosEmpleado.avisolegal,
-                            comentarios: this.datosEmpleado.comentarios,
-                            cv: filePath // Guardar la ruta del archivo
-                        };
-
-                        const crearResponse = await fetch('http://localhost:5000/candidatos', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(candidatoData)
-                        });
-
-                        if (!crearResponse.ok) throw new Error('Error al guardar el candidato');
-
-                        const nuevoCandidato = await crearResponse.json();
-                        this.candidatos.push(nuevoCandidato);
-                        this.mostrarAlerta('Aviso', 'Candidatura Enviada', 'success');
-                        this.resetForm();
-                    } catch (error) {
-                        console.error('Error:', error.message);
-                        this.mostrarAlerta('Error', 'No se pudo completar la solicitud.', 'error');
-                    }
-                } else {
-                    this.mostrarAlerta('Error', 'Debe aceptar la política de privacidad para continuar', 'error');
+            try {
+                if (!this.empleado.apellidos || !this.empleado.nombre || !this.empleado.email || !this.empleado.movil
+                    || !this.empleado.categoria || !this.empleado.modalidad) {
+                    this.mostrarAlerta("Aviso", "Todos los campos obligatorios", "warning");
+                    return; 
                 }
-            } else {
-                this.mostrarAlerta('Error', 'Por favor, completa todos los campos requeridos.', 'error');
+
+                if (!this.empleado.avisolegal) {
+                    this.mostrarAlerta("Aviso", "Debe Aceptar las Condiciones de Privacidad", "warning");
+                    return;
+                }
+
+                const datos = {
+                    apellidos: this.empleado.apellidos,
+                    nombre: this.empleado.nombre,
+                    email: this.empleado.email,
+                    movil: this.empleado.movil,
+                    categoria: this.empleado.categoria.nombre,
+                    modalidad: this.empleado.modalidad,
+                    comentarios: this.empleado.comentarios,
+                    avisolegal: "si"
+                };
+
+                const responseCandidato = await fetch('http://localhost:3000/candidatos', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(datos),
+                });
+
+                if (!responseCandidato.ok) {
+                    const errorData = await responseCandidato.json();
+                    throw new Error(`Error al guardar los datos del empleado: ${errorData.message || 'Desconocido'}`);
+                }
+
+                if (this.archivo) {
+
+                    const formData = new FormData();
+                    const candidatoId = this.empleado.movil || 'default';
+                    const nuevoArchivo = new File([this.archivo], `${candidatoId}.pdf`, { type: this.archivo.type });
+                    formData.append('archivo', nuevoArchivo);
+                    formData.append('candidatoId', this.empleado.movil)
+                    console.log(nuevoArchivo)
+                    const fileResponse = await fetch('http://localhost:5000/subircv', {
+                        method: 'POST',
+                        body: formData,
+                        credentials: 'include'
+                    });
+
+                    if (!fileResponse.ok) {
+                        throw new Error('Error al subir el archivo');
+                    } else {
+                        console.log('hubo respuesta:', fileResponse);
+                    }
+
+
+                    const fileData = await fileResponse.json();
+                    console.log('Archivo subido correctamente:', fileData);
+                }
+                this.mostrarAlerta("Aviso", "Datos y archivo enviados correctamente", "success");
+                this.getCandidatos(); 
+
+                this.empleado = {
+                    apellidos: '',
+                    nombre: '',
+                    email: '',
+                    movil: '',
+                    categoria: '',
+                    modalidad: '',
+                    comentarios: '',
+                };
+                this.$refs.fileInput.value = null;
+                this.isChecked = false;
+
+            } catch (error) {
+                console.error('Error:', error);
+                this.mostrarAlerta("Error", error.message, "error"); 
             }
+
+
         },
 
-
-
         async seleccionaCandidato(candidato) {
-            // Buscar el usuario por email en el archivo JSON
             try {
                 this.resetForm()
                 const response = await fetch('http://localhost:3000/candidatos');
@@ -254,11 +277,15 @@ export default {
                 }
                 const candidatos = await response.json();
 
-                const candidatoEncontrado = candidatos.find(c => c.email === candidato.email);
+                const candidatoEncontrado = candidatos.find(c => c.id === candidato.id);
 
 
-                if (candidatoEncontrado) {
-                    this.datosEmpleado = candidato;
+                if (candidatoEncontrado) {                  
+                    this.empleado = { ...candidatoEncontrado };
+                    let { id, ...empleadoSinId } = this.empleado;
+                    console.log(id)
+                    this.empleado = empleadoSinId;
+
                 } else {
                     this.mostrarAlerta('Error', 'Candidato no encontrado en el servidor.', 'error');
                 }
@@ -269,74 +296,104 @@ export default {
         },
 
         async deleteCandidato(candidato) {
-            try {
-                const response = await fetch('http://localhost:3000/candidatos');
-                if (!response.ok) {
-                    throw new Error(`Error en la solicitud: ${response.status} - ${response.statusText}`);
-                }
+            const resp = await Swal.fire({
+                title: "¿Estás seguro?",
+                html: `Desea Eliminar a <strong>${candidato.nombre} ${candidato.apellidos}</strong> <br><br>Esta acción no se puede deshacer`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Aceptar",
+                cancelButtonText: "Cancelar"
+            })
+            if (resp.isConfirmed) {
+                try {
+                    const response = await fetch('http://localhost:3000/candidatos');
+                    if (!response.ok) {
+                        throw new Error('Error al obtener los candidatos: ' + response.statusText);
+                    }
+                    const candidatosExistentes = await response.json();
+                    const candidatoExistente = candidatosExistentes.find(c => c.id === candidato.id);
+                    if (candidatoExistente) {
+                        await fetch(`http://localhost:3000/candidatos/${candidatoExistente.id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(candidatoExistente)
+                        });
 
-                const candidatosExistentes = await response.json();
-                const candidatoExistente = candidatosExistentes.find(c => c.email === candidato.email);
-                if (candidatoExistente) {
-                    await fetch(`http://localhost:3000/candidatos/${candidatoExistente.id}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(candidatoExistente)
-                    });
-
-                    this.mostrarAlerta("Aviso", "Candidato eliminado correctamente", "success")
-                    this.getCandidatos();
-                } else {
-                    this.mostrarAlerta("Error", "Candidato no encontrado", "error")
+                        this.mostrarAlerta("Aviso", "Candidato dado de baja correctamente", "success")
+                        this.getCandidatos();
+                    } else {
+                        this.mostrarAlerta("Error", "Candidato no encontrado", "error")
+                    }
+                    this.resetForm()
+                } catch (error) {
+                    console.error(error);
+                    this.mostrarAlerta('Error', 'No se pudo dar de baja el candidato.', 'error');
                 }
-                this.resetForm()
-            } catch (error) {
-                console.error(error);
             }
         },
 
-        async modificarUsuario() {
-            try {
-                this.editEmail = false;
-                const response = await fetch('http://localhost:3000/candidatos');
-                if (!response.ok) {
-                    throw new Error('Error al obtener los candidatos: ' + response.statusText);
+        async modificarCandidato() {
+            const resp = await Swal.fire({
+                title: "¿Estás seguro?",
+                html: `Desea Modificar a <strong>${this.empleado.nombre} ${this.empleado.apellidos}</strong> <br><br>Está a punto de modificarlo`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Aceptar",
+                cancelButtonText: "Cancelar"
+            })
+            if (resp.isConfirmed) {
+                try {
+                    this.editEmail = false;
+                    const response = await fetch('http://localhost:3000/candidatos');
+                    if (!response.ok) {
+                        throw new Error('Error al obtener los candidatos: ' + response.statusText);
+                    }
+
+                    const candidatosExistentes = await response.json();
+
+                    let candidatoExistente = candidatosExistentes.find(c => c.email === this.empleado.email);
+
+                    if (candidatoExistente) {
+                        candidatoExistente = this.empleado;
+
+                        await fetch(`http://localhost:3000/candidatos/${candidatoExistente.id}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(candidatoExistente)
+                        });
+
+                        this.mostrarAlerta("Aviso", "Candidato modificado correctamente", "success")
+                        this.getCandidatos();
+
+                    } else {
+                        this.mostrarAlerta("Error", "Candidato no encontrado", "error")
+                    }
+                    this.resetForm()
+                    this.cargado = false
+                } catch (error) {
+                    console.error(error);
+                    this.mostrarAlerta('Error', 'No se pudo modificar el candidato.', 'error');
                 }
-
-                const candidatosExistentes = await response.json();
-
-                // Verificar si el DNI ya está registrado
-                let candidatoExistente = candidatosExistentes.find(c => c.email === this.candidato.email);
-
-                if (candidatoExistente) {
-                    candidatoExistente = this.candidato;
-
-                    await fetch(`http://localhost:3000/usuarios/${candidatoExistente.id}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(candidatoExistente)
-                    });
-
-                    this.mostrarAlerta("Aviso", "Candidato modificado correctamente", "success")
-                    this.getCandidatos();
-                } else {
-                    this.mostrarAlerta("Error", "Usuario no encontrado", "error")
-                }
-                this.resetForm()
-            } catch (error) {
-                console.error(error);
-                this.mostrarAlerta('Error', 'No se pudo modificar el usuario.', 'error');
             }
+        },
+
+        handleFileChange(event) {
+            this.archivo = event.target.files[0];
+            console.log(this.archivo)
         },
 
         validarEmail(email) {
-            const emailPattern = /^[a-zA-Z0-9]+([._-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(\.[a-zA-Z]{2, })+$/;
+            const emailPattern = /^[a-zA-Z0-9]+([._-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+$/;
             if (!emailPattern.test(email)) {
-                this.mostrarAlerta('Error', 'Formato correo electronico no válido', 'error')
+                this.mostrarAlerta('Error', 'Formato correo electrónico no válido', 'error');
                 this.emailError = "";
             } else {
                 return true;
@@ -345,16 +402,37 @@ export default {
 
         validarMovil(movil) {
             if (movil === '') {
+
                 return true;
             }
-
             const movilRegex = /^[67]\d{8}$/;
 
             if (!movilRegex.test(movil)) {
-                this.mostrarAlerta('Error', 'Movil con formato no válido', 'error');
+                this.mostrarAlerta('Error', 'Móvil con formato no válido.', 'error');
                 return false;
             }
 
+        },
+
+        validarComentario(comentario) {
+            if (this.empleado.comentarios.length > 256) {
+                this.mostrarAlerta('Error', 'Has sobrepasado el número máximo de caracteres', 'error');
+                return false;
+            } else {
+                this.empleado.comentarios = comentario
+                return false;
+            }
+        },
+        siguientePagina() {
+            if (this.currentPage * this.pageSize < this.candidatos.length) {
+                this.currentPage++;
+            }
+        },
+
+        paginaAnterior() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+            }
         },
 
         mostrarAlerta(titulo, mensaje, icono) {
@@ -363,15 +441,15 @@ export default {
                 text: mensaje,
                 icon: icono,
                 customClass: {
-                    container: "custom-alert-container",
-                    popup: "custom-alert-popup",
-                    modal: "custom-alert-modal",
-                },
+                    container: 'custom-alert-container',
+                    popup: 'custom-alert-popup',
+                    modal: 'custom-alert-modal'
+                }
             });
         },
 
-        resetForm() {
-            this.datosEmpleado = {
+        limpiarFormCli() {
+            this.empleado = {
                 apellidos: "",
                 nombre: "",
                 email: "",
@@ -380,32 +458,13 @@ export default {
                 categoria: "",
                 modalidad: "",
                 avisolegal: "",
+                comentarios: "",
             }
+            this.$refs.fileInput.value = null;
         },
 
-        handleChangeCV(event) {
-            this.cv = event.target.files[0];
-            console.log(this.cv);
-        },
 
-        async guardarCV() {
-            try{
-                const formData = new FormData();
-                formData.append("archivo", this.cv);
-
-                const uploadResponse = await fetch('http://localhost:5000/upload', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (!uploadResponse.ok) throw new Error('Error al subir el archivo');
-
-                const uploadResult = await uploadResponse.json();
-                this.datosEmpleado.cv = uploadResult.filePath;
-            }
-        },
-
-        async getDepartamento() {
+        async getDepartamentos() {
             try {
                 const response = await fetch("http://localhost:3000/categorias")
                 if (!response.ok) {
@@ -419,22 +478,15 @@ export default {
 
         async getCandidatos() {
             try {
-                const response = await fetch("http://localhost:3000/candidatos");
+                const response = await fetch("http://localhost:3000/candidatos")
                 if (!response.ok) {
-                    throw new Error("Error en la solicitud: " + response.statusText);
+                    throw new Error("Error en la solicitud" + response.statusText)
                 }
-                const candidatos = await response.json();
-                console.log(candidatos);
-                this.candidatos = candidatos;
+                this.candidatos = await response.json();
             } catch (error) {
                 console.error(error);
             }
         }
-
-
-
-    },
-};
-
-
+    }
+}
 </script>

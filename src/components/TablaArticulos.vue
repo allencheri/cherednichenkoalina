@@ -208,13 +208,13 @@ export default {
             this.mostrarAlerta('Error', 'Complete todos los campos.', 'error')
         }
         },
+
+        
         async seleccionaArticulo(articulo) {
-            // Buscar el articulo por DNI en el archivo JSON
             try {
                 this.resetForm()
                 const articulos = await obtenerArticulos();
 
-                // Encontrar el articulo por su DNI
                 const articuloEncontrado = articulos.find(c => c._id === articulo._id);
 
                 if (articuloEncontrado) {

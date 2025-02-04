@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 
 
-const API_URL = "http://localhost:5000/articulos"; // Ajusta la URL a tu servidor
+const API_URL = "http://localhost:5000/articulos"; 
 
 export async function obtenerArticulos() {
     try {

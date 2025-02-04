@@ -112,22 +112,18 @@ const router = createRouter({
   routes
 })
 
-//Guarda de navegación global
 router.beforeEach((to, from, next) => {
-  //Verificar si es administrador
   if (to.meta.requiresAdmin) {
-    //Verifica si el usuario está logueado y si es administrador
     const isLogueado = localStorage.getItem('isLogueado') === 'true';
     const isAdmin = localStorage.getItem('isAdmin') === 'true';
 
     if (!isLogueado || !isAdmin) {
-      //Si no es administrador, redirige a otra ruta
       next({ name: 'login' });
     } else {
-      next(); //Permite el acceso a la ruta
+      next(); 
     }
   } else {
-    next(); //Si no es necesaria la verificación de administrador, permite el acceso a la ruta
+    next(); 
   }
 })
 
