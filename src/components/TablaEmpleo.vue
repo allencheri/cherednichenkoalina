@@ -1,12 +1,8 @@
 <template>
     <div>
         <div class="row d-flex align-items-center">
-            <h2 class="font-weight-bold text-uppercase text-primary position-relative d-inline-block mt-4">
-            <i class="bi bi-person-workspace"></i>
-            Trabaja con nosotros
-            <span class="underline-effect"></span>
-            <router-link to="/" class="btn btn-custom"><i class="bi bi-arrow-return-left me-2"></i></router-link>
-        </h2>
+            <h3 class="text-center font-weight-bold mt-4 pt-4 pb-4 text-primary "><i class="bi bi-person-workspace"></i>
+                TRABAJA CON NOSOTROS</h3>
 
 
         </div>
@@ -98,7 +94,7 @@
                         <th scope="col" class="w-10 text-center align-middle">Móvil</th>
                         <th scope="col" class="w-10 text-center align-middle">Categoría</th>
                         <th scope="col" class="w-10 text-center align-middle">Modalidad</th>
-                        <th scope="col" class="table-info text-center align-middle">Acción</th>
+                        <th scope="col" class="table-primary text-center align-middle">Acción</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -109,7 +105,7 @@
                         <td class="text-start align-middle">{{ empleado.movil }}</td>
                         <td class="text-start align-middle">{{ empleado.categoria }}</td>
                         <td class="text-start align-middle">{{ empleado.modalidad }}</td>
-                        <td class="text-center align-middle table-info">
+                        <td class="text-center align-middle table-primary">
                             <div v-if="empleado.nombre !== ''">
                                 <button class="btn btn-warning m-2" @click="seleccionaCandidato(empleado)">
                                     <i class="fas fa-pencil-alt"></i>
@@ -162,7 +158,6 @@ export default {
             categorias: [],
             pageSize: 5,
             currentPage: 1,
-            // cargado: false,
             isAdmin: false,
             archivo: null
         }

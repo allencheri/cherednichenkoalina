@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid p-4 mt-5 shadow rounded">
+  <div class="container-fluid p-4 mt-5 shadow rounded mb-5">
     <h3 class="text-center text-primary">¡Bienvenidos a Regalos Corporativos TEIS 🎁</h3>
     <p>
       Especializados en detalles que fortalecen relaciones profesionales, ofrecemos opciones elegantes y personalizadas
@@ -43,10 +43,9 @@ export default {
 </script>
 
 <style>
+
 .background-image {
   width: 100%;
-  height: 300px;
-  object-fit: cover;
   border-radius: 15px;
 }
 </style>

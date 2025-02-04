@@ -1,27 +1,23 @@
 <template>
   <div class="container">
-    <h2 class="font-weight-bold text-uppercase text-primary position-relative d-inline-block mt-4">
-            <i class="bi bi-box-seam"></i>
-            Bienvenida a la tienda
-            <span class="underline-effect"></span>
-            <router-link to="/" class="btn btn-custom"><i class="bi bi-arrow-return-left me-2"></i></router-link>
-        </h2>
+    <h3 class="text-center font-weight-bold mt-4 pt-4 pb-4 text-primary "><i class="bi bi-box"></i>
+        BIENVENIDA A LA TIENDA</h3>
       <nav class="navbar">
-          <form class="container-fluid justify-content-start mt-5">
-              <button class="btn btn-outline-dark me-2" @click.prevent="seleccionarCategoria(null)" >Todos</button>
-              <button class="btn btn-outline-dark me-2" @click.prevent="seleccionarCategoria('Ofimática')">Ofimática</button>
-              <button class="btn btn-outline-dark me-2" @click.prevent="seleccionarCategoria('Electrónica')">Electrónica</button>
-              <button class="btn btn-outline-dark me-2" @click.prevent="seleccionarCategoria('Deporte')">Deporte</button>
-              <button class="btn btn-outline-dark me-2" @click.prevent="seleccionarCategoria('Libros')">Libros</button>
-              <button class="btn btn-outline-dark me-2" @click.prevent="seleccionarCategoria('Hogar')">Hogar</button>
-              <button class="btn btn-outline-dark" @click.prevent="seleccionarCategoria('Otros')">Otros</button>
+          <form class="container-fluid justify-content-start mt-3">
+              <button class="btn btn-outline-primary me-2" @click.prevent="seleccionarCategoria(null)" >Todos</button>
+              <button class="btn btn-outline-primary me-2" @click.prevent="seleccionarCategoria('Ofimática')">Ofimática</button>
+              <button class="btn btn-outline-primary me-2" @click.prevent="seleccionarCategoria('Electrónica')">Electrónica</button>
+              <button class="btn btn-outline-primary me-2" @click.prevent="seleccionarCategoria('Deporte')">Deporte</button>
+              <button class="btn btn-outline-primary me-2" @click.prevent="seleccionarCategoria('Libros')">Libros</button>
+              <button class="btn btn-outline-primary me-2" @click.prevent="seleccionarCategoria('Hogar')">Hogar</button>
+              <button class="btn btn-outline-primary" @click.prevent="seleccionarCategoria('Otros')">Otros</button>
             </form>
       </nav>
       <table class="table table-striped mt-4">
               <thead>
                   <tr class="table-primary mt-4">
                       <th scope="col" class="w-10 text-center align-middle">Foto</th>
-                      <th scope="col" class="w-20 text-start  align-middle">Nombre</th>
+                      <th scope="col" class="w-20 text-center align-middle">Nombre</th>
                       <th scope="col" class="w-45 text-center align-middle">Descripción</th>
                       <th scope="col" class="w-10 text-center align-middle">Precio</th>
                       <th scope="col" class="w-10 text-center align-middle">Stock</th>
@@ -38,7 +34,7 @@
                       <td class="text-center align-middle">{{ articulo.precio }} &euro;</td>
                       <td class="text-center align-middle">{{ articulo.stock }}</td>
                       <td class="table-primary text-center align-middle">
-                          <button class="btn btn-light m-2" @click="comprarArticulo(articulo.id)">
+                          <button class="btn btn-light m-2"> <!-- @click="comprarArticulo(articulo.id)" -->
                               <i class="bi bi-cart"></i>
                           </button>
                       </td>

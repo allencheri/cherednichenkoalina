@@ -69,7 +69,6 @@
 
 
 <script>
-//import Swal from 'sweetalert2';
 import passport from '../config/passport.mjs';
 
 export default {
@@ -134,6 +133,7 @@ export default {
                         this.errorMessage = ""; // Limpiar mensaje de error si las credenciales son correctas
                         this.successMessage = "Inicio de sesión exitoso";
                         localStorage.setItem('isLogueado', 'true')
+                        localStorage.setItem('nombreUsuario', usuario.nombre)
 
                         if (usuario.tipo === "admin") {
                             localStorage.setItem('isAdmin', 'true')

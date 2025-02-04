@@ -55,6 +55,10 @@
             </button>
           </div>
 
+          <div>
+            <span class="text-white">{{ nombreUsuario }}</span>
+          </div>
+
           <div class="d-flex align-items-center">
             <div class="dropdown m-2">
               <button class="btn btn-light btn-sm rounded-circle shadow-sm" type="button" id="dropdownMenuButton1"
@@ -106,6 +110,8 @@ export default {
     //Comprobar si el usuario está logueado
     this.isAdmin = localStorage.getItem('isAdmin') === 'true';
     this.isLogueado = localStorage.getItem('isLogueado') === 'true';
+    this.nombreUsuario = localStorage.getItem('nombreUsuario');
+
   },
   methods: {
     toggleDropdown() {
