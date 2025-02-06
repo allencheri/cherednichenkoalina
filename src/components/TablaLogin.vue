@@ -132,8 +132,9 @@ export default {
                     if (usuario.tipo === "admin" || usuario.tipo === "usuario") {
                         this.errorMessage = ""; // Limpiar mensaje de error si las credenciales son correctas
                         this.successMessage = "Inicio de sesión exitoso";
-                        localStorage.setItem('isLogueado', 'true')
-                        localStorage.setItem('nombreUsuario', usuario.nombre)
+                        localStorage.setItem('nombreUsuario', usuario.nombre);
+                        localStorage.setItem('isLogueado', 'true');
+                        
 
                         if (usuario.tipo === "admin") {
                             localStorage.setItem('isAdmin', 'true')

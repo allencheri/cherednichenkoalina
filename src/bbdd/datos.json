@@ -33005,15 +33005,16 @@
   ],
   "candidatos": [
     {
-      "id": "f536",
-      "apellidos": "Rodríguez",
-      "nombre": "José",
+      "id": "0163",
+      "apellidos": "Perez",
+      "nombre": "Jose",
       "email": "jose@gmail.com",
-      "movil": "12345678",
-      "cv": "",
-      "categoria": "Ventas",
-      "modalidad": "Remoto",
-      "avisolegal": true
+      "movil": "678909876",
+      "cv": "http://localhost:5000/uploads/cv/1738836367255.pdf",
+      "avisolegal": true,
+      "categoria": "Logistica",
+      "modalidad": "Híbrido",
+      "comentarios": "hola"
     }
   ],
   "categorias": [

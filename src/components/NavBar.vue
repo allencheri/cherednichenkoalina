@@ -55,7 +55,7 @@
             </button>
           </div>
 
-          <div>
+          <div v-if="isLogueado" class="d-flex align-items-center">
             <span class="text-white">{{ nombreUsuario }}</span>
           </div>
 
