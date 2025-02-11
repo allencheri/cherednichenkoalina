@@ -31,20 +31,36 @@ app.use(rutas);
 app.set("port", process.env.PORT || 5000);
 
 // Verificar si la carpeta "uploads" existe, si no, crearla
-const uploadDir = path.join(__dirname, "uploads/cv");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
+const uploadCv = path.join(__dirname, "uploads/cv");
+if (!fs.existsSync(uploadCv)) {
+  fs.mkdirSync(uploadCv);
+}
+
+const uploadImg = path.join(__dirname, "uploads/img");
+if (!fs.existsSync(uploadImg)) {
+  fs.mkdirSync(uploadImg);
 }
 
 // Configuración de almacenamiento de archivos
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, uploadDir); // Usa ruta absoluta para evitar errores
+    cb(null, uploadCv); // Usa ruta absoluta para evitar errores
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname)); // Renombrar archivo
   }
 });
+
+const storageImg = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadImg); // Usa ruta absoluta para evitar errores
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname)); // Renombrar archivo
+  }
+});
+
+const img = multer({ storage: storageImg });
 
 const upload = multer({ storage: storage });
 
@@ -53,11 +69,37 @@ app.post("/upload", upload.single("file"), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: "No se subió ningún archivo" });
   }
-  res.json({ fileUrl: `http://localhost:${app.get("port")}/uploads/cv/${req.file.filename}` });
+  res.json({ fileUrl: req.file.filename});
 });
 
+app.post("/uploadImg", img.single("file"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ message: "No se subió ningún archivo" });
+  }
+  res.json({ fileUrl: req.file.filename });
+});
+
+app.delete("/uploads/cv/:filename", (req, res) => {
+  const { filename } = req.params;
+  const filePath = path.join(__dirname, "uploads", "cv", filename);
+
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      return res.status(404).json({message: "Archivo no encontrado"});
+    }
+  })
+
+  fs.unlink(filePath, (err) => {
+    if(err) {
+      return res.status(500).json({message: "Error al eliminar el archivo", error: err});
+    }
+    res.json({message: "Archivo eliminado correctamente"})
+  })
+})
+
 // Servir archivos estáticos desde la carpeta uploads
-app.use("/uploads/cv", express.static(uploadDir));
+app.use("/uploads/cv", express.static(uploadCv));
+app.use("/uploads/img", express.static(uploadImg));
 
 // Ruta de prueba
 app.get("/", (req, res) => {

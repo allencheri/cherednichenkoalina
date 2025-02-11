@@ -12,6 +12,7 @@ import TablaRegistro from '@/components/TablaRegistro.vue'
 import TablaLogin from '@/components/TablaLogin.vue'
 import PanelGestion from '@/components/PanelGestion.vue'
 import PaginaTienda from '@/components/PaginaTienda.vue'
+import TablaCarrito from '@/components/TablaCarrito.vue'
 
 const routes = [
   {
@@ -102,6 +103,13 @@ const routes = [
     name: 'login',
 
     component: TablaLogin
+  },
+
+  {
+    path: '/carrito',
+    name: 'carrito',
+
+    component: TablaCarrito
   }
 
 

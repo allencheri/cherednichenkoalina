@@ -33005,16 +33005,16 @@
   ],
   "candidatos": [
     {
-      "id": "0163",
-      "apellidos": "Perez",
-      "nombre": "Jose",
-      "email": "jose@gmail.com",
+      "id": "a322",
+      "apellidos": "Lopez",
+      "nombre": "Pepe",
+      "email": "pepe@gmail.com",
       "movil": "678909876",
-      "cv": "http://localhost:5000/uploads/cv/1738836367255.pdf",
-      "avisolegal": true,
-      "categoria": "Logistica",
+      "cv": "1739264941832.pdf",
+      "categoria": "IT",
       "modalidad": "Híbrido",
-      "comentarios": "hola"
+      "avisolegal": true,
+      "comentarios": "Soy Pepe"
     }
   ],
   "categorias": [

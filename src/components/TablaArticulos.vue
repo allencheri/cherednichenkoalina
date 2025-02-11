@@ -43,9 +43,8 @@
                 </div>
 
                 <div class="input-group-text mb-3 w-100">
-                    <span class="input-group-text mb-2 mt-2">Imagen URL: </span>
-                    <input type="url" class="form-control sm w-100 ms-2" placeholder="http://imagen-url.com"
-                        v-model="articulo.imagen_url">
+                    <span class="input-group-text mb-2 mt-2">Imagen: </span>
+                    <input type="file" class="form-control sm w-100" placeholder="" @change="handleFileUpload">
 
                     <span for="comentarios" class="input-group-text mb-2 mt-2 ms-4">Fecha de Alta:</span>
                     <input type="date" class="form-control sm w-25 ms-2" placeholder="dd/mm/yyyy"
@@ -132,6 +131,7 @@
 
 <script>
 import Swal from 'sweetalert2';
+import axios from 'axios';
 import { obtenerArticulos, agregarArticulo, eliminarArticulo } from '@/js/articuloServicios.js';
 
 export default {
@@ -159,7 +159,8 @@ export default {
                 'Deporte',
                 'Libros',
                 'Otros'
-            ]
+            ],
+            fileImg: null
         };
     },
 
@@ -170,9 +171,10 @@ export default {
 
     computed: {
         articulosPorPagina() {
-            const start = (this.currentPage - 1) * this.pageSize;
-            return this.articulos.slice(start, start + this.pageSize);
-        }
+          const indiceInicial = (this.currentPage - 1) * this.pageSize;
+          console.log(this.articulos.slice(indiceInicial, indiceInicial + this.pageSize)); 
+          return this.articulos.slice(indiceInicial, indiceInicial + this.pageSize);
+      },
     },
 
     methods: {
@@ -180,36 +182,54 @@ export default {
             return id.slice(-8);
         },
 
-        siguientePagina() {
-            if (this.currentPage * this.pageSize < this.articulos.length) {
-                this.currentPage++;
-            }
-        },
+         siguientePagina() {
+          if (this.currentPage * this.pageSize < this.articulos.length) {
+              this.currentPage++;
+          }
+      },
 
-        paginaAnterior() {
-            if (this.currentPage > 1) {
-                this.currentPage--;
-            }
+      paginaAnterior() {
+          if (this.currentPage > 1) {
+              this.currentPage--;
+          }
+      },
+
+        handleFileUpload(event) {
+            this.fileImg = event.target.files[0];
         },
 
         async grabarArticulo() {
-            if(this.articulo.nombre && this.articulo.categoria && this.articulo.descripcion && this.articulo.precio && this.articulo.stock && this.articulo.fechaAlta){
-            try {
-                const nuevoArticulo = await agregarArticulo(this.articulo);
-                console.log(nuevoArticulo);
-                this.mostrarAlerta("Aviso", "Artículo dado de alta correctamente", "success")
-                this.getArticulos();
-                this.resetForm()
-            } catch (error) {
-                console.error(error);
-                this.mostrarAlerta('Error', 'No se pudo guardar el artículo.', 'error');
+            if (this.articulo.nombre && this.articulo.categoria && this.articulo.descripcion && this.articulo.precio && this.articulo.stock && this.articulo.fechaAlta) {
+                try {
+
+
+                    // Subida de archivo antes de enviar el candidato
+                    const formData = new FormData();
+                    formData.append("file", this.fileImg);
+
+                    const uploadResponse = await axios.post("http://localhost:5000/uploadImg", formData, {
+                        headers: { "Content-Type": "multipart/form-data" }
+                    });
+
+                    // Asignar URL del archivo subido al objeto empleado
+                    this.articulo.imagen_url = uploadResponse.data.fileUrl;
+
+
+                    const nuevoArticulo = await agregarArticulo(this.articulo);
+                    console.log(nuevoArticulo);
+                    this.mostrarAlerta("Aviso", "Artículo dado de alta correctamente", "success")
+                    this.getArticulos();
+                    this.resetForm()
+                } catch (error) {
+                    console.error(error);
+                    this.mostrarAlerta('Error', 'No se pudo guardar el artículo.', 'error');
+                }
+            } else {
+                this.mostrarAlerta('Error', 'Complete todos los campos.', 'error')
             }
-        }else{
-            this.mostrarAlerta('Error', 'Complete todos los campos.', 'error')
-        }
         },
 
-        
+
         async seleccionaArticulo(articulo) {
             try {
                 this.resetForm()
@@ -220,7 +240,7 @@ export default {
                 if (articuloEncontrado) {
 
                     this.articulo = { ...articuloEncontrado };
-                    this.articulo.fechaAlta = this.articulo.fechaAlta.split('T')[0]; 
+                    this.articulo.fechaAlta = this.articulo.fechaAlta.split('T')[0];
 
                 } else {
                     this.mostrarAlerta('Error', 'Artículo no encontrado en el servidor.', 'error');

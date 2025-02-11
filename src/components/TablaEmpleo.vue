@@ -92,28 +92,28 @@
                 <thead>
                     <tr class="table-primary">
                         <th scope="col" class="w-15 text-center align-middle">Apellidos</th>
-                        <th scope="col" class="w-25 text-center  align-middle">Nombre</th>
+                        <th scope="col" class="w-25 text-start  align-middle">Nombre</th>
                         <th scope="col" class="w-20 text-center align-middle">Email</th>
                         <th scope="col" class="w-10 text-center align-middle">Móvil</th>
                         <th scope="col" class="w-10 text-center align-middle">Categoría</th>
                         <th scope="col" class="w-10 text-center align-middle">Modalidad</th>
                         <th scope="col" class="w-10 text-center align-middle">Modalidad</th>
 
-                        <th scope="col" class="table-primary text-center align-middle">Acción</th>
+                        <th scope="col" class="table-info text-center align-middle">Acción</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="empleado in candidatosPorPagina" :key="empleado.id">
-                        <td class="text-center align-middle">{{ empleado.apellidos }}</td>
-                        <td class="text-center align-middle">{{ empleado.nombre }}</td>
+                        <td class="text-start align-middle">{{ empleado.apellidos }}</td>
+                        <td class="text-start align-middle">{{ empleado.nombre }}</td>
                         <td class="text-center align-middle">{{ empleado.email }}</td>
-                        <td class="text-center align-middle">{{ empleado.movil }}</td>
-                        <td class="text-center align-middle">{{ empleado.categoria }}</td>
-                        <td class="text-center align-middle">{{ empleado.modalidad }}</td>
-                        <td class="text-center align-middle"><a :href="empleado.cv" target="_blank"><i
+                        <td class="text-start align-middle">{{ empleado.movil }}</td>
+                        <td class="text-start align-middle">{{ empleado.categoria }}</td>
+                        <td class="text-start align-middle">{{ empleado.modalidad }}</td>
+                        <td class="text-start align-middle"><a :href=urlBase+empleado.cv target="_blank"><i
                                     class="fas fa-file-alt text-primary me-2"></i></a></td>
 
-                        <td class="text-center align-middle table-primary">
+                        <td class="text-center align-middle table-info">
                             <div>
                                 <button class="btn btn-warning m-2" @click="seleccionaCandidato(empleado)">
                                     <i class="fas fa-pencil-alt"></i>
@@ -139,8 +139,6 @@
         </div>
     </div>
 </template>
-  
-  
 
 <script>
 
@@ -173,6 +171,7 @@ export default {
             editEmail: true,
             filtroEmpleado: "",
             file: null,
+            urlBase: 'http://localhost:5000/uploads/cv/',
             isAdmin: false,
         }
     },
@@ -202,10 +201,7 @@ export default {
         async grabarCandidato() {
             if (this.empleado.apellidos && this.empleado.email && this.empleado.nombre && this.empleado.categoria && this.empleado.movil && this.empleado.modalidad) {
                 if (this.empleado.avisolegal) {
-                    if (this.empleado.comentarios.length > 256) {
-                        this.empleado.comentarios = "";
-                    }
-
+                    if (this.empleado.comentarios.length > 256) this.empleado.comentarios = "";
 
                     try {
                         if (!this.file) {
@@ -299,8 +295,13 @@ export default {
 
                     const candidatosExistentes = await response.json();
                     // Verificar si el Email ya está registrado
-                    const candidatoExistente = candidatosExistentes.find(candidato => candidato.email === candidato.email);
+                    const candidatoExistente = candidatosExistentes.find(c => c.id === candidato.id);
                     if (candidatoExistente) {
+                        if (candidatoExistente.cv) {
+                            const cvName = candidatoExistente.cv;
+                            await axios.delete(`http://localhost:5000/uploads/cv/${cvName}`);
+                        }
+
                         await fetch(`http://localhost:3000/candidatos/${candidatoExistente.id}`, {
                             method: 'DELETE',
                             headers: {

@@ -108,8 +108,8 @@ export default {
   },
   mounted() {
     //Comprobar si el usuario está logueado
-    this.isAdmin = localStorage.getItem('isAdmin') === 'true';
-    this.isLogueado = localStorage.getItem('isLogueado') === 'true';
+    this.isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
+    this.isLogueado = JSON.parse(localStorage.getItem('isLogueado'));
     this.nombreUsuario = localStorage.getItem('nombreUsuario');
 
   },
