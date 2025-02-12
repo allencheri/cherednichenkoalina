@@ -33015,6 +33015,18 @@
       "modalidad": "Híbrido",
       "avisolegal": true,
       "comentarios": "Soy Pepe"
+    },
+    {
+      "id": "0a2e",
+      "apellidos": "Gomez",
+      "nombre": "Antonio",
+      "email": "antonio@gmail.com",
+      "movil": "678909876",
+      "cv": "1739349263139.pdf",
+      "categoria": "Logistica",
+      "modalidad": "Presencial",
+      "avisolegal": true,
+      "comentarios": "Soy Antonio"
     }
   ],
   "categorias": [

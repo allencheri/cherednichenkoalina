@@ -3,7 +3,7 @@
         <h3 class="text-center font-weight-bold mt-4 pt-4 pb-4 text-primary "><i class="bi bi-box"></i>
             BIENVENIDA A LA TIENDA</h3>
         <nav class="navbar">
-            <form class="container-fluid justify-content-start mt-3">
+            <form class="container-fluid justify-content-start">
                 <button class="btn btn-outline-primary me-2" @click.prevent="seleccionarCategoria(null)">Todos</button>
                 <button class="btn btn-outline-primary me-2"
                     @click.prevent="seleccionarCategoria('Ofimática')">Ofimática</button>
@@ -18,11 +18,20 @@
                 <button class="btn btn-outline-primary" @click.prevent="seleccionarCategoria('Otros')">Otros</button>
             </form>
         </nav>
-        <div class="align-items-">
-            <router-link to="/carrito" class="btn btn-outline-primary m-2">
-                <i class="bi bi-cart"> </i>
+        <div class="align-items">
+            <router-link to="/carrito" class="btn btn-outline-dark m-2" v-if="isLogueado">
+                <i class="bi bi-cart"></i> ({{ cartStore.totalItems }})
             </router-link>
+            <div v-if="!isLogueado">
+                <router-link to="#" class="btn btn-outline-dark m-2" >
+                    <i class="bi bi-cart"></i> ({{ cartStore.totalItems }})
+                </router-link>
+                <p>Tienes que <a href="/login">Iniciar Sesión</a> para poder comprar</p>
+            </div>
+
+
         </div>
+
         <table class="table table-striped mt-4">
             <thead>
                 <tr class="table-primary mt-4">
@@ -31,7 +40,7 @@
                     <th scope="col" class="w-45 text-center align-middle">Descripción</th>
                     <th scope="col" class="w-10 text-center align-middle">Precio</th>
                     <th scope="col" class="w-10 text-center align-middle">Stock</th>
-                    <th scope="col" class="w-10 text-center align-middle">Foto</th>
+                    <th scope="col" class="w-25 text-center align-middle">Foto</th>
                     <th scope="col" class="table-primary text-center align-middle">Comprar</th>
 
                 </tr>
@@ -44,7 +53,7 @@
                     <td class="text-center align-middle">{{ articulo.precio }} &euro;</td>
                     <td class="text-center align-middle">{{ articulo.stock }}</td>
                     <td class="text-center align-middle">
-                        <img :src="urlBaseImg + articulo.imagen_url" alt="Foto de producto" width="64" height="64"
+                        <img :src="urlBaseImg+articulo.imagen_url" alt="Foto de producto" width="74" height="74"
                             class="img-thumbnail" @click="openModal(articulo)" />
 
                     </td>
@@ -103,39 +112,27 @@ export default {
             console.log(this.articulos.slice(indiceInicial, indiceInicial + this.pageSize));
             return this.articulos.slice(indiceInicial, indiceInicial + this.pageSize);
         },
+        cartStore() {
+            return useCartStore();
+        },
     },
 
     mounted() {
         this.getArticulos();
+        this.isLogueado = JSON.parse(localStorage.getItem('isLogueado'));
     },
 
     methods: {
-
         truncarId(id) {
             return id.slice(-8);
         },
 
-        siguientePagina() {
-            if (this.currentPage * this.pageSize < this.articulos.length) {
-                this.currentPage++;
-            }
-        },
-
-        paginaAnterior() {
-            if (this.currentPage > 1) {
-                this.currentPage--;
-            }
-        },
-
         async getArticulos() {
             try {
-                if (!this.categoria) {
-                    this.articulos = await obtenerArticulos();
-                    return;
+                this.articulos = await obtenerArticulos();
+                if (this.categoria) {
+                    this.articulos = this.articulos.filter(a => a.categoria === this.categoria);
                 }
-                let articulos = await obtenerArticulos();
-                console.log(articulos)
-                this.articulos = articulos.filter((articulo) => articulo.categoria === this.categoria);
             } catch (error) {
                 console.error(error);
             }
@@ -143,33 +140,26 @@ export default {
 
         seleccionarCategoria(categoria) {
             this.categoria = categoria;
-            this.getArticulos()
+            this.getArticulos();
         },
 
+        addToCart(articulo) {
+            this.cartStore.addToCart(articulo);
+        },
         openModal(articulo) {
             this.imagenSeleccionada = this.urlBaseImg + articulo.imagen_url;
             this.isModalOpen = true;
         },
 
-
         closeModal() {
             this.isModalOpen = false;
-        },
-
-        addToCart(articulo) {
-            const cartStore = useCartStore();
-            cartStore.addToCart(articulo);
-
         }
     }
+};
 
-
-
-}
 </script>
 
 <style scoped>
-/* El modal (ventana emergente) */
 .modal {
     position: fixed;
     top: 0;
@@ -184,14 +174,12 @@ export default {
     cursor: pointer;
 }
 
-/* Estilo para la imagen expandida dentro del modal */
 .modal-content {
     max-width: 80%;
     max-height: 80%;
     object-fit: contain;
 }
 
-/* Para el estilo del cursor sobre la imagen del modal */
 .modal-content:hover {
     cursor: zoom-out;
 }
