@@ -13,6 +13,8 @@ import TablaLogin from '@/components/TablaLogin.vue'
 import PanelGestion from '@/components/PanelGestion.vue'
 import PaginaTienda from '@/components/PaginaTienda.vue'
 import TablaCarrito from '@/components/TablaCarrito.vue'
+import TablaCancel from '@/components/TablaCancel.vue'
+import TablaSuccess from '@/components/TablaSuccess.vue'
 
 const routes = [
   {
@@ -110,7 +112,21 @@ const routes = [
     name: 'carrito',
 
     component: TablaCarrito
-  }
+  },
+
+  {
+    path: '/cancel',
+    name: 'cancel',
+
+    component: TablaCancel
+  },
+
+  {
+    path: '/success',
+    name: 'success',
+
+    component: TablaSuccess
+  },
 
 
 ]
@@ -128,10 +144,10 @@ router.beforeEach((to, from, next) => {
     if (!isLogueado || !isAdmin) {
       next({ name: 'login' });
     } else {
-      next(); 
+      next();
     }
   } else {
-    next(); 
+    next();
   }
 })
 

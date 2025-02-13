@@ -9,6 +9,8 @@ import multer from "multer";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
+import Stripe from "stripe";
+import 'dotenv/config'
 
 // Configurar __dirname en ES Modules
 const __filename = fileURLToPath(import.meta.url);
@@ -18,10 +20,13 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const server = http.createServer(app);
 
+
+
+
 app.use(cors({
   origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
-  allowedHeaders: ['Content-Type', 'Authorization'], 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.use(morgan("dev"));
 app.use(express.json());
@@ -69,7 +74,7 @@ app.post("/upload", upload.single("file"), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: "No se subió ningún archivo" });
   }
-  res.json({ fileUrl: req.file.filename});
+  res.json({ fileUrl: req.file.filename });
 });
 
 app.post("/uploadImg", img.single("file"), (req, res) => {
@@ -85,15 +90,15 @@ app.delete("/uploads/cv/:filename", (req, res) => {
 
   fs.access(filePath, fs.constants.F_OK, (err) => {
     if (err) {
-      return res.status(404).json({message: "Archivo no encontrado"});
+      return res.status(404).json({ message: "Archivo no encontrado" });
     }
   })
 
   fs.unlink(filePath, (err) => {
-    if(err) {
-      return res.status(500).json({message: "Error al eliminar el archivo", error: err});
+    if (err) {
+      return res.status(500).json({ message: "Error al eliminar el archivo", error: err });
     }
-    res.json({message: "Archivo eliminado correctamente"})
+    res.json({ message: "Archivo eliminado correctamente" })
   })
 })
 
@@ -106,11 +111,53 @@ app.get("/", (req, res) => {
   res.send("Servidor en Marcha");
 });
 
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+app.post("/crear-checkout-session", async (req, res) => {
+  console.log("Recibida solicitud con body:", req.body);
+  try {
+    const { items, amount } = req.body;
+
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ error: "No hay productos en el carrito" });
+    }
+
+    if (!amount || isNaN(amount) || amount <= 0) {
+      return res.status(400).json({ error: "El monto no es válido" });
+    }
+
+    // Crear la sesión de Stripe
+    const lineItems = items.map(item => ({
+      price_data: {
+        currency: "eur",
+        product_data: {
+          name: item.nombre,
+        },
+        unit_amount: item.precio * 100,
+        quantity: item.quantity,
+      },
+    }));
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: lineItems,
+      mode: "payment",
+      success_url: "http://localhost:8080/success",
+      cancel_url: "http://localhost:8080/cancel",
+    });
+
+    res.json({ id: session.id });
+  } catch (error) {
+    console.error("Error al crear la sesión:", error);
+    res.status(500).json({ error: "Error al crear la sesión" });
+  }
+});
+
 mongoose.connect("mongodb://root:renaido@localhost:27017/bbdd?authSource=admin")
   .then((db) => console.log("Conectado a MongoDB"))
   .catch((err) => console.log(err));
 
 
 server.listen(app.get("port"), () => {
-console.log(`Servidor corriendo en http://localhost:${app.get("port")}`);
+  console.log(`Servidor corriendo en http://localhost:${app.get("port")}`);
 });

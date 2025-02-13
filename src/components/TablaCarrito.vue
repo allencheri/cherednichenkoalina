@@ -65,7 +65,8 @@
         <div class="d-flex justify-content-between align-items-center mt-4">
             <h3 class="font-weight-bold text-primary">Total: {{ cartStore.totalPrice }} &euro;</h3>
             <!-- Botón Finalizar compra -->
-            <button class="btn btn-warning" @click="finalizarCompra">Finalizar compra</button>
+            <button class="btn btn-warning" @click="finalizarPago" :disabled="cartStore.length === 0">Finalizar
+                compra</button>
         </div>
 
         <!-- Modal -->
@@ -79,6 +80,8 @@
 
 <script>
 import { useCartStore } from '@/store/carts';
+import { loadStripe } from '@stripe/stripe-js';
+
 
 export default {
     data() {
@@ -117,8 +120,38 @@ export default {
             this.cartStore.updateQuantity(articulo._id, articulo.quantity);
         },
 
-        finalizarCompra() {
-            
+
+        async finalizarPago() {
+            console.log("Finalizando compra...");
+            const stripe = await loadStripe(process.env.VUE_APP_PUBLIC_KEY);
+
+            // Enviar los datos correctos
+            const response = await fetch("http://localhost:5000/crear-checkout-session", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    items: this.cartStore.items,
+                    amount: this.cartStore.totalPrice
+                })
+            });
+
+            const session = await response.json();
+            console.log("Session response:", session);
+
+            if (!session.id) {
+                console.error("No se recibió una respuesta válida de Stripe");
+                return;
+            }
+            const { error } = await stripe.redirectToCheckout({
+                sessionId: session.id,
+            });
+
+            if (error) {
+                console.error("Error al redireccionar al checkout de Stripe:", error.message);
+                alert(`Error al redirigir: ${error.message}`);
+            }
         }
     }
 }
