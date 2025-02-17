@@ -29,6 +29,9 @@ export const useCartStore = defineStore('cart', {
       if (product) {
         product.quantity += 1;
       }
+      if (product.quantity > product.stock) {
+        product.quantity = product.stock;
+      }
     },
 
     updateQuantity(productId, quantity) {

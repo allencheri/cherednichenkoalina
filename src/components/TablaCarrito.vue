@@ -65,8 +65,8 @@
         <div class="d-flex justify-content-between align-items-center mt-4">
             <h3 class="font-weight-bold text-primary">Total: {{ cartStore.totalPrice }} &euro;</h3>
             <!-- Botón Finalizar compra -->
-            <button class="btn btn-warning" @click="finalizarPago" :disabled="cartStore.length === 0">Finalizar
-                compra</button>
+            <button class="btn btn-warning" @click="finalizarPago" :disabled="cartStore.length === 0">
+                Finalizar compra</button>
         </div>
 
         <!-- Modal -->
@@ -88,14 +88,9 @@ export default {
         return {
             urlBaseImg: 'http://localhost:5000/uploads/img/',
             isModalOpen: false,
-            imagenSeleccionada: null
+            imagenSeleccionada: null,
+            cartStore : useCartStore()
         }
-    },
-
-    computed: {
-        cartStore() {
-            return useCartStore();
-        },
     },
     methods: {
         truncarId(id) {
@@ -125,6 +120,11 @@ export default {
             console.log("Finalizando compra...");
             const stripe = await loadStripe(process.env.VUE_APP_PUBLIC_KEY);
 
+            if (this.cartStore.items.length === 0) {
+                alert("No hay productos en el carrito");
+                return;
+            }
+
             // Enviar los datos correctos
             const response = await fetch("http://localhost:5000/crear-checkout-session", {
                 method: "POST",
@@ -150,7 +150,6 @@ export default {
 
             if (error) {
                 console.error("Error al redireccionar al checkout de Stripe:", error.message);
-                alert(`Error al redirigir: ${error.message}`);
             }
         }
     }

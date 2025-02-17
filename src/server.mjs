@@ -21,8 +21,6 @@ const app = express();
 const server = http.createServer(app);
 
 
-
-
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -111,6 +109,8 @@ app.get("/", (req, res) => {
   res.send("Servidor en Marcha");
 });
 
+
+//Para pagos
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 app.post("/crear-checkout-session", async (req, res) => {
@@ -134,12 +134,13 @@ app.post("/crear-checkout-session", async (req, res) => {
           name: item.nombre,
         },
         unit_amount: item.precio * 100,
-        quantity: item.quantity,
+
       },
+      quantity: item.quantity,
     }));
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
+      payment_method_types: ['card'],
       line_items: lineItems,
       mode: "payment",
       success_url: "http://localhost:8080/success",
