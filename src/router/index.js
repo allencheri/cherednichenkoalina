@@ -126,7 +126,7 @@ const routes = [
     name: 'success',
 
     component: TablaSuccess
-  },
+  }
 
 
 ]
