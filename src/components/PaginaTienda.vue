@@ -18,10 +18,7 @@
             <router-link to="/carrito" class="btn btn-outline-dark m-2" v-if="isLogueado">
                 <i class="bi bi-cart"></i> ({{ cartStore.totalItems }})
             </router-link>
-            <div v-else>
-                <router-link to="#" class="btn btn-outline-dark m-2">
-                    <i class="bi bi-cart"></i> ({{ cartStore.totalItems }})
-                </router-link>
+            <div class="mt-2" v-else >
                 <p>Tienes que <a href="/login">Iniciar Sesión</a> para poder comprar</p>
             </div>
         </div>
@@ -51,7 +48,7 @@
                             class="img-thumbnail" @click="openModal(articulo)" />
                     </td>
                     <td class="text-center">
-                        <button class="btn btn-light" @click="addToCart(articulo)">
+                        <button class="btn btn-light" @click="addToCart(articulo)" v-if="isLogueado">
                             <i class="fas fa-shopping-cart"></i>
                         </button>
                     </td>
@@ -144,7 +141,9 @@ export default {
 
         addToCart(articulo) {
             this.cartStore.addToCart(articulo);
+            this.cartStore.saveToLocalStorage(); // Asegurar persistencia
         },
+
 
         paginaAnterior() {
             if (this.currentPage > 1) {

@@ -89,9 +89,14 @@ export default {
             urlBaseImg: 'http://localhost:5000/uploads/img/',
             isModalOpen: false,
             imagenSeleccionada: null,
-            cartStore : useCartStore()
+            cartStore: useCartStore()
         }
     },
+
+    mounted() {
+        this.cartStore.loadCart();
+    },
+
     methods: {
         truncarId(id) {
             return id.slice(-8);
@@ -125,33 +130,42 @@ export default {
                 return;
             }
 
-            // Enviar los datos correctos
-            const response = await fetch("http://localhost:5000/crear-checkout-session", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    items: this.cartStore.items,
-                    amount: this.cartStore.totalPrice
-                })
-            });
+            try {
+                const response = await fetch("http://localhost:5000/crear-checkout-session", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        items: this.cartStore.items,
+                        amount: this.cartStore.totalPrice
+                    })
+                });
 
-            const session = await response.json();
-            console.log("Session response:", session);
+                const session = await response.json();
+                console.log("Session response:", session);
 
-            if (!session.id) {
-                console.error("No se recibió una respuesta válida de Stripe");
-                return;
-            }
-            const { error } = await stripe.redirectToCheckout({
-                sessionId: session.id,
-            });
+                if (!session.id) {
+                    console.error("No se recibió una respuesta válida de Stripe");
+                    return;
+                }
 
-            if (error) {
-                console.error("Error al redireccionar al checkout de Stripe:", error.message);
+                const { error } = await stripe.redirectToCheckout({
+                    sessionId: session.id,
+                });
+
+                if (!error) {
+                    console.log("Compra completada. Limpiando carrito...");
+                    this.cartStore.clearCart(); // Limpiar el carrito después de la compra
+                } else {
+                    console.error("Error al redireccionar al checkout de Stripe:", error.message);
+                }
+
+            } catch (err) {
+                console.error("Error en la compra:", err);
             }
         }
+
     }
 }
 </script>
