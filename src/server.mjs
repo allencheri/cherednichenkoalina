@@ -154,7 +154,7 @@ app.post("/crear-checkout-session", async (req, res) => {
   }
 });
 
-mongoose.connect("mongodb://root:renaido@localhost:27017/bbdd?authSource=admin")
+mongoose.connect("mongodb://admin:abc123@localhost:27017/bbdd?authSource=admin")
   .then((db) => console.log("Conectado a MongoDB"))
   .catch((err) => console.log(err));
 
